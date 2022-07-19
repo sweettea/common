@@ -102,7 +102,7 @@ jenkins:
 	  checkin
 	# A separate step to avoid spurious filecopier failures.
 	$(MAKE) -j$(grep -c processor /proc/cpuinfo)               \
-	  DESTDIR=$(realpath -e ./man) man
+	  DESTDIR=${PWD}/man man
 
 TAGS:
 	find . -name '*.p[lm]' -print | etags -
