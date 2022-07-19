@@ -1748,7 +1748,7 @@ sub checkNFSMounts {
   # checked
   my %uniqueMounts = ();
   my $server = redhatNFSServer();
-  if (_isAnsible() && !_isPFarm()) {
+  if (_isDevVM() || _isBeaker()) {
     # NFS server names will vary.
     %uniqueMounts = (
        "/permabit/not-backed-up"  => "*:/permabit/not-backed-up",
