@@ -1,0 +1,188 @@
+# This is the template version of the configuration file for Configured perl
+# modules. It documents available modules and their configuration
+# options, and default values that might exist.
+#
+# $Id$
+##
+
+########################################################################
+# The optional 'include' top level key can be used to specify another
+# configuration from which to recursively include configuration. If an included
+# configuration is specified, the including configuration may specify not only
+# additions of new keys, but can modify or replace the entries in the included
+# config.
+#
+# If a key starts with a '+', the value of that key (sans +) will replace any
+# value in the included config, or will be added if it does not exist in the
+# included config. If a key starts with a '-', that key (sans -) and everything
+# under it will be removed from the included config. If a key starts with any
+# other symbol, it will be added to the included config if the original config
+# does not already contain it. Otherwise, the values below that key will be
+# merged recursively if they are a hash, and be considered invalid if they are
+# a scalar.
+
+# include:
+
+########################################################################
+# The following configuration dictionary is the list of classes
+# which may be instantiated.
+#
+# Disabled classes should specify a value of ~ or they should specify a status:
+# propery whose value is 'disabled'.
+#
+# Enabled classes must specify a 'config' property whose value is a dictionary
+# of configuration parameters, a 'status' property whose value is 'enabled', or
+# a 'class' property.
+#
+# The optional 'class' property may also be specified in addition to the
+# 'config' property. Whether or not there is a 'config' property, the class
+# property should name an alternate class to instantiate.
+# An optional 'file' property may also be specified which gives the
+# location of the file from which to load the class if the class:
+# property is also specified. The 'file' property will be ignored if no
+# 'class' property exists.
+
+Permabit::CheckServer::Constants::Implementation:
+  status: enabled
+  config:
+    nfs:
+      # Lab farm server
+      farm:
+      # Red Hat server
+      redhat:
+    triage:
+      user:
+      uid:
+
+Permabit::CheckServer::Utils::Implementation:
+  status: enabled
+  config:
+    # The DNS configuration to check.
+    # If undefined skip the check.
+    dns:
+      #search: ~
+      #ns1: ~
+      #ns2: ~
+    hostname:
+      # If the machine name *does not* end in specified suffix it is not
+      # considered a correct FQDN.
+      # An undefined value says any machine name is acceptable.
+      fqdnSuffix:
+
+Permabit::Jira: ~
+# config properties: username, password, server (URL, no trailing
+#                    slash), restVersion (default "latest")
+
+Permabit::LabUtils::Implementation:
+  status: enabled
+  config:
+    machineClasses:
+      # LabMachine must come last.
+      - class: Permabit::LabUtils::LabMachine
+        file:
+    virtualMachine:
+      name:
+        regex: .+
+        fqdnSuffixes:
+          # If the machine name is a FQDN and *does not* end in any of this
+          # list of regexes it is not something for which we can determine
+          # its "virtual" status.  Processing will error.
+          #
+          # Default: Everything is considered acceptable.
+          - \..+$
+
+Permabit::MainConstants::Implementation:
+  status: enabled
+  config:
+    users:
+      # account name to email mapping
+      human:
+      # non-human account names
+      nonHuman:
+
+Permabit::RSVP: ~
+  #config:
+    # The default RSVP daemon host, overridden by $PRSVP_HOST. Required.
+    #defaultRSVPServer: ~
+    # The domain name to use in email addresses; null (default) means
+    # don’t send email.
+    #emailDomain: ~
+    # Port of the RSVP Daemon
+    #dport: 1752
+    # The URL prefix for examining Jira issues; null (default) means
+    # not to include an HTML link in the email message text.
+    #jiraBrowseURL: ~
+    # A special account to use in Jira when forcing a move to
+    # maintenance. Null (the default) means to use the current user’s
+    # id as we normally would.
+    #jiraUserWhenForce: ~
+    # How many times to attempt to release a host
+    #releaseRetryCount: 4
+    # How many seconds to wait in between attempts to release a host
+    #releaseRetryTimeout: 2
+    # How many seconds to wait in between attempts to reserve a host
+    #reserveRetryTimeout: 15
+    # The factor to increase the retry timeouts by when retrying
+    #retryMultiplier: 2
+    # Total number of sleeping seconds before retries
+    #secondsSlept: 0
+    # Directory containing tools like cleanFarm.sh; default: no
+    # explicit directory. Used in generated messages.
+    #toolDir: ~
+    # The user reserving the machines; default is invoking user.
+    #user: ~
+    # Should this print the result of requests to STDOUT?
+    #verbose: 0
+
+Permabit::SystemUtils::Implementation:
+  status: enabled
+
+Permabit::Triage::TestInfo::Implementation:
+  status: enabled
+  config:
+    # Albireo performance hosts.
+    albireoPerfHosts:
+    # VDO performance hosts:
+    vdoPerfHosts:
+
+Permabit::Triage::Utils::Implementation:
+  status: enabled
+  config:
+    graphing:
+      remoteLogs:
+      gnuplotOutputDir:
+    jira:
+      user:
+
+Permabit::Utils::Implementation:
+  status: enabled
+  config:
+    chat:
+      server:
+    mail:
+      domain:
+
+########################################################################
+# CheckServer prototype configuration.
+##
+CheckServer::Host:
+  config:
+    # The NFS server from which /permabit mounts should be served.
+    # nfsServer:
+    # Directories to add to the PATH for command resolution.
+    paths: 
+      - /usr/local/sbin
+      - /usr/local/bin
+      - /usr/sbin
+      - /usr/bin
+      - /sbin
+      - /bin
+    # Exported permabit filesystems and their expected mount points.
+    permabitMounts:
+      /permabit/build: /build
+      /permabit/not-backed-up: /permabit/not-backed-up
+    testDirs:
+      # Each entry maps a test directory to the class prefix for tests in that
+      # directory. If the directory is relative, it is taken relative to the
+      # checkServer.pl bindir.
+      CheckServer/Test: CheckServer::Test

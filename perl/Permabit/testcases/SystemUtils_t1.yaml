@@ -1,0 +1,7 @@
+# Override the default Permabit::Configured yaml file for testing.
+#
+# $Id: $
+##
+
+Permabit::SystemUtils::Implementation:
+  status: enabled

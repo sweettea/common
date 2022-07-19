@@ -1,0 +1,34 @@
+# Override the default Permabit::Configured yaml file for testing.
+#
+# $Id$
+##
+
+Disabled: ~
+Disabled2:
+  status: disabled
+  config:
+    foo: quuxom
+  class: Enabled
+Enabled:
+  config:
+    foo: foo
+Enabled2:
+  status: enabled
+Replaced:
+  class: Enabled
+Replaced2:
+  class: Enabled
+  config:
+    foo: baz
+Replaced3:
+  class: Enabled2
+ReplacedDisabled:
+  class: Disabled
+  config:
+    foo: baz
+ReplacedPath:
+  class: EnabledPath
+  file: testcases/configured_t1/EnabledPath.pm
+EnabledPath:
+  config:
+    foo: quux

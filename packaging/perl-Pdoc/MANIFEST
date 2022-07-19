@@ -1,0 +1,12 @@
+MANIFEST
+Makefile.PL
+bin/genPdocIndex.pl
+bin/pdoc2pod.pl
+lib/Pdoc/Location.pm
+lib/Pdoc/ParamList.pm
+lib/Pdoc/File.pm
+lib/Pdoc/Generator.pm
+lib/Pdoc/Makefile
+lib/Pdoc/Module.pm
+lib/Pdoc/Script.pm
+lib/Pdoc/Function.pm

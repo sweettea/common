@@ -1,0 +1,10 @@
+# Override the default Permabit::Configured yaml file for testing.
+#
+# $Id: $
+##
+
+Permabit::CheckServer::Constants::Implementation:
+  status: enabled
+
+Permabit::CheckServer::Utils::Implementation:
+  status: enabled

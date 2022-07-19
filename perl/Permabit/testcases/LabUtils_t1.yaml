@@ -1,0 +1,24 @@
+# Override the default Permabit::Configured yaml file for testing.
+#
+# $Id: $
+##
+
+include: /etc/permabit/perl.yaml
+
++Permabit::LabUtils::Implementation:
+  status: enabled
+  config:
+    machineClasses:
+      # LabMachine must come last.
+      -  class: Permabit::LabUtils::LabMachine
+         file:
+    virtualMachine:
+      name:
+        regex: .+
+        fqdnSuffixes:
+          # If the machine name is a FQDN and *does not* end in any of this
+          # list of regexes it is not something for which we can determine
+          # its "virtual" status.  Processing will error.
+          #
+          # Default: Everything, by name, is considered acceptable.
+          - \..+$

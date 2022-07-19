@@ -1,0 +1,22 @@
+# Override the default Permabit::Configured yaml file for testing.
+#
+# $Id: //eng/common/perl/Permabit/testcases/Configured_t1.yaml#3 $
+##
+
+include: Configured_t1.yaml
+
+New:
+  status: disabled
+  
+Disabled:
+  status: disabled
+
+Enabled:
+  config:
+    +foo: bar
+
+Enabled2:
+  -status: enabled
+  
+Replaced:
+  file: /some/file.pm

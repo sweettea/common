@@ -1,0 +1,9 @@
+MANIFEST
+Makefile.PL
+bin/checkServer.pl
+bin/cleanAndRelease.pl
+bin/cleanFarm.sh
+lib/Permabit/CheckServer/Constants.pm
+lib/Permabit/CheckServer/Constants/Implementation.pm
+lib/Permabit/CheckServer/Utils.pm
+lib/Permabit/CheckServer/Utils/Implementation.pm

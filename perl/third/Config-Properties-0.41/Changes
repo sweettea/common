@@ -1,0 +1,43 @@
+Revision history for Perl extension Config::Properties.
+
+0.41  Tue Jul 10 00:00:00 2002
+	- Fixed value checks in most methods that incorrectly treated the
+	  value '0' or the empty string as an undefined value. I could not
+	  contact the original author in any way (tried 3 email addresses 
+	  and news://comp.lang.perl.modules), so I uploaded this version
+	  myself. Craig Manley (c.manley at skybound.nl).
+
+0.40  Tue Jul 10 11:32:00 2001
+	- 0.4 (almost half-way there) release
+	- Add format/getFormat/setFormat() to change the appearance of saved properties 
+		(thanks to David Boyce for the idea)
+	- Added POD documenation for format feature
+	- Typo fixes in POD
+	- Add reference to official JavaDoc (idea thanks to David Boyce)
+	Randy Jay Yarger (ryarger@mediaone.net)
+
+	- Fixed default handling when retrieving a property value
+	David Boyce (dsb@world.std.com)
+	
+0.03  Sat May 19 21:56:10 2001
+	- Corrected Object Oriented behavior (was using class variables for everying,
+		now using instance variables)
+	- Skip blank lines (spotted by Eric Zylberstejn and Christian Niles)
+	- Fixed borked packaging (#$@% Windows!) (spotted by Ken Ho,
+		Michael Peterson and David Boyce)
+	- Fixed incorrect version number (spotted by Michael Peterson and David Boyce)
+	Randy Jay Yarger (ryarger@mediaone.net)
+	
+	- Allow the escape characters proscribed by the Java API spec
+	Christian Niles (can207@nyu.edu)
+
+0.02  Thu May 03 21:19:00 2001
+	- Fixed bug relating to doubled escape characters(\\). 
+		Thanks to David Boyce for the spot.
+	Randy Jay Yarger (ryarger@mediaone.net)
+
+0.01  Wed Jan 17 15:38:07 2001
+	- original version; created by h2xs 1.20 with options
+		-X -n Config::Properties
+	Randy Jay Yarger (ryarger@mediaone.net)	
+
