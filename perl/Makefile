@@ -2,6 +2,8 @@
 #
 # $Id$
 
+ROOT := ..
+
 PWD:= $(shell pwd)
 LIB:= ${PWD}/lib
 DESTDIR:= ${PWD}/build
@@ -93,8 +95,18 @@ checkin: $(patsubst %,%-checkin,${CHECKIN_SUBDIRS})
 %-checkin:
 	${MAKE} -C $(patsubst %-checkin,%,$@) checkin
 
+jenkins:
+	mkdir -p ${ROOT}/logs/perltests
+	$(MAKE) -j$(grep -c processor /proc/cpuinfo) \
+		SAVELOGS=1 LOGDIR=$(realpath -e ${ROOT}/logs/perltests) \
+	  checkin
+	# A separate step to avoid spurious filecopier failures.
+	$(MAKE) -j$(grep -c processor /proc/cpuinfo)               \
+	  DESTDIR=$(realpath -e ./man) man
+
 TAGS:
 	find . -name '*.p[lm]' -print | etags -
 
 .PHONY:: all third doc symlinks check checkin TAGS critic
 .PHONY:: clean all-clean lib-clean dir-clean doc-clean do-check do-critic
+.PHONY:: jenkins
