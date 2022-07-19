@@ -136,7 +136,6 @@ our @BAD_FILES = (
   '/etc/vdoconf.xml',
   '/etc/vdoconf.yml',
   '/etc/vdocustom.xml',
-  '/etc/violetconf.xml',
   '/lib64/dmeventd-vdo.so',
   '/tmp/.X3-lock',
   '/tmp/vdo.lock',
@@ -157,11 +156,6 @@ our @BAD_PROGRAMS = qw(
   albserver
   albtest
   albvalidate
-  azurevalidate
-  azureping
-  azurecreate
-  azureserver
-  azurefill
   fio
   processCorruptorTrace
   processTrace
@@ -171,8 +165,6 @@ our @BAD_PROGRAMS = qw(
   vdoMonitor
   vdoPrepareUpgrade
   vdoStats
-  violetformat
-  violetFormat
 );
 
 # Processes that shouldn't be running on the machine even if the
