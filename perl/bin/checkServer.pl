@@ -1747,16 +1747,24 @@ sub checkNFSMounts {
   # Prepare the list of mounts that are specific to the server that is being
   # checked
   my %uniqueMounts = ();
+  my $server = redhatNFSServer();
   if (_isAnsible() && !_isPFarm()) {
     # NFS server names will vary.
     %uniqueMounts = (
-       "/permabit/build"          => "*:/build",
-       "/permabit/not-backed-up"  => "*:/not-backed-up",
+       "/permabit/not-backed-up"  => "*:/permabit/not-backed-up",
                     );
-    return;
+    if (defined($server)) {
+      if (_isBeaker()) {
+        $uniqueMounts{"/permabit/release"}
+          = "$server:/vdo_permabit_release_nfs";
+        if (_isFarm()) {
+          $uniqueMounts{"/permabit/datasets"}
+            = "$server:/vdo_permabit_datasets_nfs";
+        }
+      }
+    }
   } else {
     %uniqueMounts = ();
-    my $server = redhatNFSServer();
     if (defined($server)) {
       %uniqueMounts = (
          "/permabit/user"           => "$server:/vdo_permabit_user_nfs",
