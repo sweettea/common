@@ -97,11 +97,11 @@ checkin: $(patsubst %,%-checkin,${CHECKIN_SUBDIRS})
 
 jenkins:
 	mkdir -p ${ROOT}/logs/perltests
-	$(MAKE) -j$(grep -c processor /proc/cpuinfo) \
-		SAVELOGS=1 LOGDIR=$(realpath -e ${ROOT}/logs/perltests) \
+	$(MAKE) -j`grep -c processor /proc/cpuinfo` \
+		SAVELOGS=1 LOGDIR=`realpath -e ${ROOT}/logs/perltests` \
 	  checkin
 	# A separate step to avoid spurious filecopier failures.
-	$(MAKE) -j$(grep -c processor /proc/cpuinfo)               \
+	$(MAKE) -j`grep -c processor /proc/cpuinfo`               \
 	  DESTDIR=${PWD}/man man
 
 TAGS:
