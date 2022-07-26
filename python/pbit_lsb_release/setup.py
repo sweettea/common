@@ -31,7 +31,7 @@ def versioned(src):
 setup = functools.partial(
           setuptools.setup,
           name = python_prefixed(package_name),
-          version = "1.0.0",
+          version = "1.0.1",
           description = python_prefixed(package_name),
           author = "Joe Shimkus",
           author_email = "jshimkus@redhat.com",
@@ -40,7 +40,7 @@ setup = functools.partial(
             "console_scripts" :
               "{0} = src:lsb_command".format(versioned("pbit_lsb_release"))
           },
-          install_requires = [prefixed("setuptools")],
+          install_requires = [],
           zip_safe = False
         )
 

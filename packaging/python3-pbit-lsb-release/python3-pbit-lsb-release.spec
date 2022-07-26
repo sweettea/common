@@ -2,8 +2,8 @@
 %define repo_branch main
 
 %define name python3-pbit-lsb-release
-%define version 1.0.0
-%define unmangled_version 1.0.0
+%define version 1.0.1
+%define unmangled_version 1.0.1
 %define release 1
 
 Summary: %{name}
@@ -18,12 +18,15 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Prefix: %{_prefix}
 BuildArch: noarch
 
-# Build dependencies
+%if 0%{?rhel} && 0%{?rhel} < 9
+BuildRequires: python39
+BuildRequires: python39-setuptools
+Requires: python39
+%else
 BuildRequires: python3
 BuildRequires: python3-setuptools
-
-# Runtime dependencies
-# Requires:
+Requires: python3
+%endif
 
 %description
 UNKNOWN
@@ -44,3 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f python/pbit_lsb_release/INSTALLED_FILES
 %defattr(-,root,root)
+
+%changelog
+* Tue Jul 26 2022 Joe Shimkus <jshimkush@redhat.com> - 1.0.1-1
+- Make functional rpm for RHEL earlier than 9.0.
