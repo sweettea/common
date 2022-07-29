@@ -902,6 +902,10 @@ sub reserveHostGroups {
     $had{$type} = scalar(@{$names{$type}});
     $want{$type} = $self->{$numTypes};
     $need{$type} = $want{$type} - $had{$type};
+
+    if (!grep { /^$type$/ } @{$self->{typeNames}}) {
+      push(@{$self->{typeNames}}, $type);
+    }
   }
   # Process types that do not need any hosts reserved.  We call
   # reserveHostGroup for the side effect of verifying reservations.
@@ -961,10 +965,6 @@ sub reserveHostGroupsByOSClass {
   my @classNames = sort(keys(%{$classes}));
   for my $OSClass (@classNames) {
     my $type = lc($OSClass);
-    if (!grep { /^$type$/ } @{$self->{typeNames}}) {
-      push(@{$self->{typeNames}}, $type);
-    }
-
     $self->{"${type}Names"} = [];
     $self->{"${type}Class"} = join(",", $OSClass, @testHWClasses);
     $self->{"num" . ucfirst(${type}) . "s"} = $classes->{$OSClass};
@@ -986,7 +986,7 @@ sub reserveHostGroupsByOSClass {
   }
 
   # Reserve the hosts for each OS class requested.
-  $self->reserveHostGroups(@{$self->{typeNames}});
+  $self->reserveHostGroups(map { lc($_) } @classNames);
 }
 
 ###############################################################################
