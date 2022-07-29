@@ -62,7 +62,6 @@ use English qw(-no_match_vars);
 use File::Basename;
 use File::Copy;
 use File::Path;
-use List::Compare;
 use List::Util qw(sum);
 use Log::Log4perl;
 use Log::Log4perl::Level;
@@ -817,7 +816,7 @@ sub saveLogFiles {
 #
 # @return The list of hostnames that were reserved
 ##
-sub _reserveNumHosts {
+sub reserveNumHosts {
   my ($self, $count, $class, $msg) = assertMinMaxArgs(2, 4, @_);
   my $rsvpMsg = $self->{rsvpMsg};
   if ($msg) {
@@ -876,8 +875,8 @@ sub reserveHostGroup {
   }
   if ($numTypes > 0) {
     push(@hostNames,
-         $self->_reserveNumHosts($numTypes, $self->{"${type}Class"},
-                                 $self->_mapTypeToLabel($type)));
+         $self->reserveNumHosts($numTypes, $self->{"${type}Class"},
+                                $self->_mapTypeToLabel($type)));
   }
   map { $_->result() } @tasks;
   $self->{$typeNames} = [@hostNames];
@@ -937,56 +936,6 @@ sub reserveHostGroups {
       }
     }
   }
-}
-
-###############################################################################
-# Utility method to reserve multiple groups of machines with default
-# reservation time and message, based on the input hash of RSVP OS classes and
-# and count needed.
-#
-# @param  classes  Hashref of OS classes and number of machines to reserve.
-##
-sub reserveHostGroupsByOSClass {
-  my ($self, $classes) = assertNumArgs(2, @_);
-  my $rsvper = $self->getRSVPer();
-
-  # Parse clientClass for any hardware classes that need to be honored
-  my $rsvp = $rsvper->_getRSVP();
-  my @HARDWARE_CLASSES = $rsvp->listHardwareClasses();
-
-  my @testHWClasses = ();
-  if (defined($self->{clientClass})) {
-    my $lc = List::Compare->new([split(",",$self->{clientClass})],
-                                \@HARDWARE_CLASSES);
-    @testHWClasses = $lc->get_intersection;
-  }
-
-  # Initialize testcase object parameters for the desired OS classes
-  my @classNames = sort(keys(%{$classes}));
-  for my $OSClass (@classNames) {
-    my $type = lc($OSClass);
-    $self->{"${type}Names"} = [];
-    $self->{"${type}Class"} = join(",", $OSClass, @testHWClasses);
-    $self->{"num" . ucfirst(${type}) . "s"} = $classes->{$OSClass};
-  }
-
-  # Populate OS class typeNames with existing reserved hosts
-  my $reservedHosts = $self->canonicalizeHostnames($self->{clientNames});
-  for my $host (@{$reservedHosts}) {
-     my $OSClass = $rsvper->getOSClass($host);
-     if (!defined($OSClass)) {
-       next;
-     }
-
-     my $type = lc($OSClass);
-     if (defined($self->{"${type}Class"}) &&
-         !grep { /^$host$/ } @{$self->{"${type}Names"}}) {
-       push(@{$self->{"${type}Names"}}, $host);
-     }
-  }
-
-  # Reserve the hosts for each OS class requested.
-  $self->reserveHostGroups(map { lc($_) } @classNames);
 }
 
 ###############################################################################

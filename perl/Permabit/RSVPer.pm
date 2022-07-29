@@ -254,6 +254,16 @@ sub getOSClass {
 }
 
 ##########################################################################
+# Return the names of the hosts reserved by this RSVP object.
+#
+# @return The list of hosts reserved.
+##
+sub getReservedHosts {
+  my ($self) = assertNumArgs(1, @_);
+  return (keys(%{$self->{_reservedHosts}}));
+}
+
+##########################################################################
 # See L<Permabit::RSVP/release>
 ##
 sub releaseHost {

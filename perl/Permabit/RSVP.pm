@@ -69,7 +69,7 @@ use Permabit::Triage::Utils qw(
 
 use base qw(Exporter Permabit::Configured);
 
-our @EXPORT_OK = qw(listHardwareClasses listOsClasses);
+our @EXPORT_OK = qw(listArchitectureClasses listHardwareClasses listOsClasses);
 
 my $log = Log::Log4perl->get_logger(__PACKAGE__);
 
@@ -187,6 +187,41 @@ my @HARDWARE_CLASSES = (
   'VDO-PMI',
   'VFARM',
 );
+
+my @ARCHITECTURE_CLASSES = (
+  'AARCH64',
+  'PPC64LE',
+  'S390X',
+  'X86_64',
+);
+
+##
+# @paramList{new}
+my %properties
+  = (
+     # @ple The RSVP daemon host.
+     dhost               => ($ENV{PRSVP_HOST}
+                             // _getDefaultRSVPServer(hostname())),
+     # @ple Port of the RSVP Daemon
+     dport               => 1752,
+     # @ple OS class to use if no OS class is specified
+     osClass             => undef,
+     # @ple How many times to attempt to release a host
+     releaseRetryCount   => 4,
+     # @ple How many seconds to wait in between attempts to release a host
+     releaseRetryTimeout => 2,
+     # @ple How many seconds to wait in between attempts to reserve a host
+     reserveRetryTimeout => 15,
+     # @ple The factor to increase the retry timeouts by when retrying
+     retryMultiplier     => 2,
+     # @ple Total number of sleeping seconds before retries
+     secondsSlept        => 0,
+     # @ple The user reserving the machines
+     user                => getUserName(),
+     # @ple Should this print the result of requests to STDOUT?
+     verbose             => 0,
+    );
+##
 
 ######################################################################
 # Determine the default RSVP server.
@@ -557,6 +592,14 @@ sub listClasses {
     croak($result->{message});
   }
   return $result->{data};
+}
+
+######################################################################
+# List the Architecture classes
+##
+sub listArchitectureClasses {
+  my @classes = sort(@ARCHITECTURE_CLASSES);
+  return @classes;
 }
 
 ######################################################################
