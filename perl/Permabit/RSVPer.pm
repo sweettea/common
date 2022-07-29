@@ -18,6 +18,7 @@ use warnings FATAL => qw(all);
 use English qw(-no_match_vars);
 
 use Carp;
+use List::Compare;
 use Log::Log4perl;
 use Socket;
 use Storable qw(dclone);
@@ -226,6 +227,30 @@ sub isClass {
   my ($self, $hostname, $classname) = assertNumArgs(3, @_);
   my @classes = $self->_getRSVP()->getClassInfo($hostname);
   return scalar(grep($classname eq $_, @classes));
+}
+
+##########################################################################
+# Return the OS class in RSVP for a specific host.
+#
+# @param hostname  The hostname
+#
+# @return The associated OS class or undef if the host is in maintenance.
+##
+sub getOSClass {
+  my ($self, $hostname) = assertNumArgs(2, @_);
+  my $rsvp = $self->_getRSVP();
+  my @OS_CLASSES = $rsvp->listOsClasses();
+
+  my @classes = ();
+  eval { @classes = $rsvp->getClassInfo($hostname); };
+  if ($EVAL_ERROR) {
+    return undef;
+  }
+
+  my $lc = List::Compare->new(\@classes, \@OS_CLASSES);
+  my @intersection = $lc->get_intersection;
+
+  return (scalar(@intersection) > 0) ? $intersection[0] : undef;
 }
 
 ##########################################################################
