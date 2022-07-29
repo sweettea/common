@@ -987,11 +987,6 @@ sub reserveHostGroupsByOSClass {
 
   # Reserve the hosts for each OS class requested.
   $self->reserveHostGroups(@{$self->{typeNames}});
-
-  my @reservedNames = ();
-  for my $type (@{$self->{typeNames}}) {
-    push(@reservedNames, @{$self->{"${type}Names"}});
-  }
 }
 
 ###############################################################################
