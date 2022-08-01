@@ -4,8 +4,8 @@ Version:        1.0
 Release:        10%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
-URL:            https://gitlab.cee.redhat.com/vdo/open-sourcing/src/common
-Source0:        %{url}/-/archive/main/common-main.tar.gz
+URL:            https://github.com/dm-vdo/common
+Source0:        %{url}/archive/refs/heads/main.tar.gz
 BuildArch:      noarch
 # Module Build
 BuildRequires:  coreutils
@@ -66,7 +66,6 @@ checkServer and RSVP.
 %{_bindir}/cleanFarm.sh
 
 %prep
-#XXX: This is a name that needs fixing.
 %setup -q -n common-main
 
 %build

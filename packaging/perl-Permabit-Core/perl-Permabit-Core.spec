@@ -4,8 +4,8 @@ Version:        1.02
 Release:        26%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
-URL:            https://gitlab.cee.redhat.com/vdo/open-sourcing/src/common
-Source0:        %{url}/-/archive/main/common-main.tar.gz
+URL:            https://github.com/dm-vdo/common
+Source0:        %{url}/archive/refs/heads/main.tar.gz
 BuildArch:      noarch
 # Module Build
 BuildRequires:  coreutils
@@ -414,7 +414,6 @@ This package contains the Permabit Perl VersionNumber module.
 %{perl_vendorlib}/Permabit/VersionNumber/Special.pm
 
 %prep
-#XXX: This is a name that needs fixing.
 %setup -q -n common-main
 
 %build

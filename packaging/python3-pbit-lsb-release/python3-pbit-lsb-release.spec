@@ -10,8 +10,8 @@ Summary: %{name}
 Name: %{name}
 Version: %{version}
 Release: %{release}
-URL: https://gitlab.cee.redhat.com/vdo/open-sourcing/src/%{repo_name}
-Source0: %{url}/-/archive/%{repo_branch}/%{repo_name}-%{repo_branch}.tar.gz
+URL:     https://github.com/dm-vdo/common
+Source0: %{url}/archive/refs/heads/main.tar.gz
 License: GPL2+
 Group: Development/Libraries
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
