@@ -181,8 +181,6 @@ our %PROPERTIES
      # @ple The amount of time in seconds to allow for a testcase (0
      #       unlimited).
      testTimeout                 => 0,
-     # @ple The RSVP types being used to reserve hosts.
-     typeNames                   => [],
      # @ple The user that is running this test. This shouldn't be modified
      #      because it's not plumbed through to things such as RSVP or ssh.
      user                        => getUserName(),
@@ -901,10 +899,6 @@ sub reserveHostGroups {
     $had{$type} = scalar(@{$names{$type}});
     $want{$type} = $self->{$numTypes};
     $need{$type} = $want{$type} - $had{$type};
-
-    if (!grep { /^$type$/ } @{$self->{typeNames}}) {
-      push(@{$self->{typeNames}}, $type);
-    }
   }
   # Process types that do not need any hosts reserved.  We call
   # reserveHostGroup for the side effect of verifying reservations.
