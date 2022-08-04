@@ -67,6 +67,13 @@ sub new {
   }
   $log->debug("returning new SSHMuxIPCSession object, "
               . "timeout=$self->{timeout}");
+
+  # StrictHostKeyChecking causing ossbunsen machines to fail when ssh'ing to
+  # localhost. Turn off as its not really needed for localhost anyways.
+  if ($self->{hostname} =~ /^(localhost|127\.0\.0\.1)$/) {
+      $self->{sshConArgs}
+        = $self->{sshConArgs} . " -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ";
+  }  
   return $self->createIPCSession();
 }
 
