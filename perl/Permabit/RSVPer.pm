@@ -230,27 +230,27 @@ sub isClass {
 }
 
 ##########################################################################
-# Return the OS class in RSVP for a specific host.
+# Return any OS or architecture class listed in RSVP for a specific host.
 #
 # @param hostname  The hostname
 #
-# @return The associated OS class or undef if the host is in maintenance.
+# @return The associated OS and architecture classes, or an empty list
 ##
-sub getOSClass {
+sub getHostOSArchClasses {
   my ($self, $hostname) = assertNumArgs(2, @_);
   my $rsvp = $self->_getRSVP();
-  my @OS_CLASSES = $rsvp->listOsClasses();
+  my @classes = ($rsvp->listOsClasses(), $rsvp->listArchitectureClasses());
 
-  my @classes = ();
-  eval { @classes = $rsvp->getClassInfo($hostname); };
+  my @hostClasses = ();
+  eval { @hostClasses = $rsvp->getClassInfo($hostname); };
   if ($EVAL_ERROR) {
     return undef;
   }
 
-  my $lc = List::Compare->new(\@classes, \@OS_CLASSES);
+  my $lc = List::Compare->new(\@hostClasses, \@classes);
   my @intersection = $lc->get_intersection;
 
-  return (scalar(@intersection) > 0) ? $intersection[0] : undef;
+  return @intersection;
 }
 
 ##########################################################################
