@@ -1,6 +1,6 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
-Version:        1.02
+Version:        1.03
 Release:        26%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
@@ -437,7 +437,12 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
-* Thu Jun 02 2022 Joe Shimkus <jshimkus@redhat.com> - 1.0-26
+* Fri Aut 05 2022 Andy Walsh <awalsh@redhat.com> - 1.03-26
+- Fix ossbunsen SSHMuxIPCSession issue.
+- Testcase.pm: Remove typeNames property and references.
+- RSVPer.pm: Add the ability to get the RSVP architecture of a host.
+
+* Thu Jun 02 2022 Joe Shimkus <jshimkus@redhat.com> - 1.02-26
 - Added Permabit::CheckServer::Utils and
   Permabit::CheckServer::Utils:Implementation.
 
