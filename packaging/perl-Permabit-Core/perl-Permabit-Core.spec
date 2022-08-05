@@ -437,7 +437,7 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
-* Fri Aut 05 2022 Andy Walsh <awalsh@redhat.com> - 1.03-26
+* Fri Aug 05 2022 Andy Walsh <awalsh@redhat.com> - 1.03-26
 - Fix ossbunsen SSHMuxIPCSession issue.
 - Testcase.pm: Remove typeNames property and references.
 - RSVPer.pm: Add the ability to get the RSVP architecture of a host.
