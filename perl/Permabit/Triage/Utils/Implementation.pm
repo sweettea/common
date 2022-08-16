@@ -32,7 +32,7 @@ my $log = Log::Log4perl->get_logger(__PACKAGE__);
 ##
 sub initialize {
   my ($self) = assertNumArgs(1, @_);
-  $self->SUPER::initialize(@_);
+  $self->SUPER::initialize();
 
   # Defaults
   $self->{graphing} //= {};
