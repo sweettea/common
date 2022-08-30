@@ -143,6 +143,11 @@ my @OK_USER_PS = qw(
  fping
 );
 
+my @OK_USER_DEVVM_PS = qw(
+  ssh .* sftp
+  sshfs
+);
+
 my @OS_CLASSES = (
   'FEDORA27',
   'FEDORA28',
@@ -1003,6 +1008,25 @@ sub _checkReleaseState {
 }
 
 ######################################################################
+# Query the specified host for the specified scam variable.
+##
+sub _getScamVar {
+  my ($self, $host, $var) = assertNumArgs(3, @_);
+  my $scam = $self->runAthinfo($host, "scam_" . lc($var));
+  chomp($scam);
+  return $scam;
+}
+
+######################################################################
+# Check if the host is a development VM box
+##
+sub _isDevVM {
+  my ($self, $host) = assertNumArgs(2, @_);
+
+  return !!$self->_getScamVar($host, "DEVVM");
+}
+
+######################################################################
 # Check if a given host is ready to be put into the general
 # reservation pool.
 #
@@ -1039,6 +1063,12 @@ sub checkState {
     } else {
       $userPattern = "${user}";
     }
+  }
+
+  # If a development VM add the additional user processes we tolerate in that
+  # environment.
+  if ($self->_isDevVM($host)) {
+    push(@OK_USER_PS, @OK_USER_DEVVM_PS);
   }
 
   # Remove the header line
