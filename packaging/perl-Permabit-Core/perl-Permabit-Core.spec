@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        27%{?dist}
+Release:        28%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -437,6 +437,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Fri Sep 02 2022 Joe Shimkus <jshimkush@redhat.com> - 1.03-28
+- Changed RSVP.pm to get classes and processes from config file.
+
 * Fri Aug 26 2022 Joe Shimkus <jshimkush@redhat.com> - 1.03-27
 - Added runtime query of machine class to Permabit::RSVP.pm; allows
   dynamic specification of allowable processes.

@@ -100,8 +100,99 @@ Permabit::MainConstants::Implementation:
       # non-human account names
       nonHuman:
 
-Permabit::RSVP: ~
-  #config:
+Permabit::RSVP:
+  status: enabled
+  config:
+    classes:
+      architecture:
+        - AARCH64
+        - PPC64LE
+        - S390X
+        - X86_64
+      hardware:
+        - ALBIREO-PMI
+        - ALL
+        - FARM
+        - JFARM
+        - HARVARD
+        - PFARM
+        - VDO-PMI
+        - VFARM
+      os:
+        - FEDORA27
+        - FEDORA28
+        - FEDORA29
+        - FEDORA30
+        - FEDORA31
+        - FEDORA32
+        - FEDORA33
+        - FEDORA34
+        - FEDORA35
+        - FEDORA36
+        - RAWHIDE
+        - RHEL6
+        - RHEL7
+        - RHEL8
+        - RHEL8DEBUG
+        - RHEL9
+        - RHEL9DEBUG
+    processes:
+      ok:
+        nonUser:
+          - jsvc
+          - hald
+          - hald-addon-acpi
+        root:
+          - avahi
+          - chrony
+          - daemon
+          - dbus
+          - gdm
+          - nobody
+          - ntop
+          - ntp
+          - polkitd
+          - postfix
+          - rpc
+          - rpcuser
+          - root
+          - smmsp
+          - sshd_ser
+          - statd
+          - tomcat55
+        user:
+          - fping
+      taboo:
+        -  albscan
+        -  albserver
+        -  albfill
+        -  albGenTest
+        -  albmigrate
+        -  albreceive
+        -  albreader
+        -  albsend
+        -  apache
+        -  apache2
+        -  apphbd
+        -  heartbeat
+        -  java
+        -  nbd-client
+        -  nbd-server
+        -  nmbd
+        -  pbnfsd
+        -  pbnfsmon
+        -  smbd
+        -  stunnel
+        -  stunnel4
+        -  tcpdump
+        -  valgrind
+        -  vdoInstaller.sh
+        -  vdoMonitor
+        -  vdoQueueStats
+        -  vdoStats
+        -  www-data
+        -  ypbind
+        -  vde_switch
     # The default RSVP daemon host, overridden by $PRSVP_HOST. Required.
     #defaultRSVPServer: ~
     # The domain name to use in email addresses; null (default) means
@@ -170,7 +261,7 @@ CheckServer::Host:
     # The NFS server from which /permabit mounts should be served.
     # nfsServer:
     # Directories to add to the PATH for command resolution.
-    paths: 
+    paths:
       - /usr/local/sbin
       - /usr/local/bin
       - /usr/sbin

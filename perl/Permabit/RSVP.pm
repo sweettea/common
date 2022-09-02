@@ -73,133 +73,6 @@ our @EXPORT_OK = qw(listArchitectureClasses listHardwareClasses listOsClasses);
 
 my $log = Log::Log4perl->get_logger(__PACKAGE__);
 
-# Users who may be running processes on a machine that should not
-# prevent it from being released.
-
-# leading spaces come from windows ps right-aligning and truncating usernames
-my $ROOT_USERS_REGEXP
-  = qr/(
-        Administ
-        |\ \ SYSTEM
-        |avahi
-        |chrony
-        |daemon
-        |dbus
-        |gdm
-        |nobody
-        |ntop
-        |ntp
-        |polkitd
-        |postfix
-        |rpc
-        |rpcuser
-        |root
-        |smmsp
-        |sshd_ser
-        |statd
-        |tomcat55
-       )\s/x;
-
-my @TABOO_PS = qw(
- albscan
- albserver
- albfill
- albGenTest
- albmigrate
- albreceive
- albreader
- albsend
- apache
- apache2
- apphbd
- heartbeat
- java
- nbd-client
- nbd-server
- nmbd
- pbnfsd
- pbnfsmon
- smbd
- stunnel
- stunnel4
- tcpdump
- valgrind
- vdoInstaller.sh
- vdoMonitor
- vdoQueueStats
- vdoStats
- www-data
- ypbind
- vde_switch
-);
-
-my @OK_NON_USER_PS = qw(
-  jsvc
-  hald
-  hald-addon-acpi
-);
-
-my @OK_USER_PS = qw(
- fping
-);
-
-my @OK_USER_DEVVM_PS = qw(
-  ssh .* sftp
-  sshfs
-);
-
-my @OS_CLASSES = (
-  'FEDORA27',
-  'FEDORA28',
-  'FEDORA29',
-  'FEDORA30',
-  'FEDORA31',
-  'FEDORA32',
-  'FEDORA33',
-  'FEDORA34',
-  'FEDORA35',
-  'FEDORA36',
-  'RAWHIDE',
-  'JESSIE',
-  'LENNY',
-  'SQUEEZE',
-  'PRECISE',
-  'RHEL6',
-  'RHEL7',
-  'RHEL8',
-  'RHEL8DEBUG',
-  'RHEL9',
-  'RHEL9DEBUG',
-  'SLES11SP2',
-  'SLES11SP3',
-  'WHEEZY310',
-  'WHEEZY39',
-  'VIVID',
-  'XENIAL',
-);
-
-my @HARDWARE_CLASSES = (
-  'ALBIREO-PMI',
-  'ALL',
-  'FARM',
-  'JFARM',
-  'HARVARD',
-  'HFARM',
-  'MASTIFF',
-  'MGH',
-  'PFARM',
-  'PRODUCTION-SERVER',
-  'VDO-PMI',
-  'VFARM',
-);
-
-my @ARCHITECTURE_CLASSES = (
-  'AARCH64',
-  'PPC64LE',
-  'S390X',
-  'X86_64',
-);
-
 ######################################################################
 # Determine the default RSVP server.
 #
@@ -453,7 +326,7 @@ sub appendFarm {
   my ($self, $classList) = assertNumArgs(2, @_);
 
   foreach my $class (@$classList) {
-    if (grep { $class eq uc($_) } @HARDWARE_CLASSES) {
+    if (grep { $class eq uc($_) } @{$self->{classes}->{hardware}}) {
       return;
     }
   }
@@ -471,7 +344,7 @@ sub appendOSClass {
   my ($self, $classList) = assertNumArgs(2, @_);
 
   my @osLikeClasses = (
-                       @OS_CLASSES,
+                       @{$self->{classes}->{os}},
                        'ALL',
                       );
   foreach my $class (@$classList) {
@@ -575,7 +448,7 @@ sub listClasses {
 # List the Architecture classes
 ##
 sub listArchitectureClasses {
-  my @classes = sort(@ARCHITECTURE_CLASSES);
+  my @classes = sort(@{Permabit::RSVP->new()->{classes}->{architecture}});
   return @classes;
 }
 
@@ -583,7 +456,7 @@ sub listArchitectureClasses {
 # List the Hardware classes
 ##
 sub listHardwareClasses {
-  my @classes = sort(@HARDWARE_CLASSES);
+  my @classes = sort(@{Permabit::RSVP->new()->{classes}->{hardware}});
   return @classes;
 }
 
@@ -591,7 +464,7 @@ sub listHardwareClasses {
 # List the O/S classes
 ##
 sub listOsClasses {
-  my @classes = sort(@OS_CLASSES);
+  my @classes = sort(@{Permabit::RSVP->new()->{classes}->{os}});
   return @classes;
 }
 
@@ -1008,25 +881,6 @@ sub _checkReleaseState {
 }
 
 ######################################################################
-# Query the specified host for the specified scam variable.
-##
-sub _getScamVar {
-  my ($self, $host, $var) = assertNumArgs(3, @_);
-  my $scam = $self->runAthinfo($host, "scam_" . lc($var));
-  chomp($scam);
-  return $scam;
-}
-
-######################################################################
-# Check if the host is a development VM box
-##
-sub _isDevVM {
-  my ($self, $host) = assertNumArgs(2, @_);
-
-  return !!$self->_getScamVar($host, "DEVVM");
-}
-
-######################################################################
 # Check if a given host is ready to be put into the general
 # reservation pool.
 #
@@ -1065,11 +919,9 @@ sub checkState {
     }
   }
 
-  # If a development VM add the additional user processes we tolerate in that
-  # environment.
-  if ($self->_isDevVM($host)) {
-    push(@OK_USER_PS, @OK_USER_DEVVM_PS);
-  }
+  # Create the non "root" line-checking regex from RSVP's configuration.
+  my $lineRegex = join("|", @{$self->{processes}->{ok}->{root}});
+  $lineRegex = qr/($lineRegex)\s/x;
 
   # Remove the header line
   shift(@ps);
@@ -1077,13 +929,14 @@ sub checkState {
     # note that on Windows, username is right-aligned
     if ($userPattern
         && $line =~ /^\s*${userPattern}\s/
-        && !grep {$line =~ /\W\Q$_\E\s/} @OK_USER_PS ) {
+        && !grep {$line =~ /\W\Q$_\E\s/} @{$self->{processes}->{ok}->{user}}) {
       my $msg = "FOUND PROCESS on $host: $line";
       $log->error($msg);
       return $msg;
     }
-    foreach my $p (@TABOO_PS) {
-      if (grep {$line =~ /\W\Q$_\E\s/} @OK_NON_USER_PS) {
+    foreach my $p (@{$self->{processes}->{taboo}}) {
+      if (grep {$line
+          =~ /\W\Q$_\E\s/} @{$self->{processes}->{ok}->{nonUser}}) {
         next;
       } elsif ($line =~ /\W\Q$p\E\s/) {
         my $msg = "FOUND PROCESS on $host: $line";
@@ -1093,7 +946,7 @@ sub checkState {
     }
     # warn if there are non "root" processes found, but still
     # release as long as they're not on the forbidden list
-    if ($line !~ /$ROOT_USERS_REGEXP/) {
+    if ($line !~ /$lineRegex/) {
       $log->warn("FOUND PROCESS on $host: $line");
     }
   }
