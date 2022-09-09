@@ -290,8 +290,8 @@ sub testAppendClasses {
   $self->assert_str_equals("A,B,C,D,X,FARM", $rsvp->appendClasses("A,B,C,D"));
   $self->assert_str_equals("A,B,X,FARM", $rsvp->appendClasses(["A","B"]));
   $self->assert_str_equals("FARM,X", $rsvp->appendClasses("FARM"));
-  $self->assert_str_equals("VIVID,ALBIREO-PMI",
-                           $rsvp->appendClasses(["VIVID","ALBIREO-PMI"]));
+  $self->assert_str_equals("RHEL8,ALBIREO-PMI",
+                           $rsvp->appendClasses(["RHEL8","ALBIREO-PMI"]));
 
   # Make sure sub-strings don't match
   $self->assert_str_equals("NOT_ALL,X,FARM", $rsvp->appendClasses("NOT_ALL"));
@@ -310,14 +310,14 @@ sub testAlbireoAppendClasses {
   $self->assert_str_equals("ALBIREO,FICTIONAL,FARM",
                            $rsvp->appendClasses('ALBIREO'));
   # should get host
-  $self->assert_str_equals("ALBIREO,LENNY,FARM",
-                           $rsvp->appendClasses('ALBIREO,LENNY'));
+  $self->assert_str_equals("ALBIREO,FEDORA36,FARM",
+                           $rsvp->appendClasses('ALBIREO,FEDORA36'));
   # should get host
-  $self->assert_str_equals("ALBIREO,SQUEEZE,FARM",
-                           $rsvp->appendClasses('ALBIREO,SQUEEZE'));
+  $self->assert_str_equals("ALBIREO,RHEL9,FARM",
+                           $rsvp->appendClasses('ALBIREO,RHEL9'));
   # should get host
-  $self->assert_str_equals("ALBIREO,SQUEEZE,FOO,FARM",
-                           $rsvp->appendClasses('ALBIREO,SQUEEZE,FOO'));
+  $self->assert_str_equals("ALBIREO,RHEL9,FOO,FARM",
+                           $rsvp->appendClasses('ALBIREO,RHEL9,FOO'));
   # should get os class and host.
   $self->assert_str_equals("ALBIREO,FOO,FICTIONAL,FARM",
                            $rsvp->appendClasses('ALBIREO,FOO'));
@@ -325,25 +325,25 @@ sub testAlbireoAppendClasses {
   local *Permabit::RSVP::getDistroInfo = sub { die() };
   local *Permabit::RSVP::getReleaseInfo = sub { return {
            version        => '5.0',
-           suites         => ['lenny', 'squeeze', 'fictional'],
+           suites         => ['fedora36', 'rhel9', 'fictional'],
            relTag         => 'albireo',
-           defaultRelease => 'lenny',
+           defaultRelease => 'fedora36',
          }; };
 
   # should get default release
-  $self->assert_str_equals("ALBIREO,LENNY,FARM",
+  $self->assert_str_equals("ALBIREO,FEDORA36,FARM",
                            $rsvp->appendClasses('ALBIREO'));
   # should stay the same, because both specified
-  $self->assert_str_equals("ALBIREO,LENNY,FARM",
-                           $rsvp->appendClasses('ALBIREO,LENNY'));
+  $self->assert_str_equals("ALBIREO,FEDORA36,FARM",
+                           $rsvp->appendClasses('ALBIREO,FEDORA36'));
   # should stay the same, because both specified
-  $self->assert_str_equals("ALBIREO,SQUEEZE,FARM",
-                           $rsvp->appendClasses('ALBIREO,SQUEEZE'));
+  $self->assert_str_equals("ALBIREO,RHEL9,FARM",
+                           $rsvp->appendClasses('ALBIREO,RHEL9'));
   # should stay the same, because both specified
-  $self->assert_str_equals("ALBIREO,SQUEEZE,FOO,FARM",
-                           $rsvp->appendClasses('ALBIREO,SQUEEZE,FOO'));
+  $self->assert_str_equals("ALBIREO,RHEL9,FOO,FARM",
+                           $rsvp->appendClasses('ALBIREO,RHEL9,FOO'));
   # gets default release from getReleaseInfo
-  $self->assert_str_equals("ALBIREO,FOO,LENNY,FARM",
+  $self->assert_str_equals("ALBIREO,FOO,FEDORA36,FARM",
                            $rsvp->appendClasses('ALBIREO,FOO'));
 }
 
@@ -353,12 +353,11 @@ sub testAlbireoAppendClasses {
 sub testReserveHostsByClassWithDist {
   my ($self) = assertNumArgs(1, @_);
   my @runningOnDist = (
-                       'squeeze',
-                       'lenny',
+                       'rhel9',
+                       'fedora36',
                        'fclab',
-                       'wheezy310',
-                       'vivid',
-                       'rhel6',
+                       'rhel7',
+                       'rhel8',
                       );
 
   my @requestCases = (
@@ -377,8 +376,8 @@ sub testReserveHostsByClassWithDist {
                       { requested => 'VDO-PMI,ALL',
                         expected => 'VDO-PMI,ALL',
                       },
-                      { requested => 'VIVID,VDO-PMI',
-                        expected => 'VIVID,VDO-PMI',
+                      { requested => 'RHEL8,VDO-PMI',
+                        expected => 'RHEL8,VDO-PMI',
                       },
                      );
 
@@ -413,7 +412,7 @@ sub testReserveHostsByClassWithDist {
 ##
 sub testIsInClass {
   my ($self) = @_;
-  my @memberOfClasses     = ('ALL', 'ALBIREO', 'FARM', 'VFARM', 'SQUEEZE');
+  my @memberOfClasses     = ('ALL', 'ALBIREO', 'FARM', 'VFARM', 'RHEL9');
   my @notAMemberOfclasses = ('FOO', 'SARGE', 'GODOT', 'ALEWIFE');
   my @data = (['host-1001',
                'bob',
@@ -463,7 +462,7 @@ sub testGetClassInfo {
   my ($self) = @_;
   my $msg;
   my $host = 'host-1001';
-  my @memberOfClasses     = ('ALL', 'ALBIREO', 'FARM', 'VFARM', 'SQUEEZE');
+  my @memberOfClasses     = ('ALL', 'ALBIREO', 'FARM', 'VFARM', 'RHEL9');
   my @notAMemberOfclasses = ('FOO', 'SARGE', 'GODOT');
   @responses = ({type => "success",
                  data => [[$host,'bob',join(', ', @memberOfClasses)]],
