@@ -929,7 +929,7 @@ sub checkState {
     # note that on Windows, username is right-aligned
     if ($userPattern
         && $line =~ /^\s*${userPattern}\s/
-        && !grep {$line =~ /\W\Q$_\E\s/} @{$self->{processes}->{ok}->{user}}) {
+        && !grep {$line =~ /\W$_(\s|$)/} @{$self->{processes}->{ok}->{user}}) {
       my $msg = "FOUND PROCESS on $host: $line";
       $log->error($msg);
       return $msg;
