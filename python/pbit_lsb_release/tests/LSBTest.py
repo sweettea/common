@@ -12,7 +12,7 @@ import unittest
 class Test_LSB(unittest.TestCase):
   ####################################################################
   def test_all(self):
-    command = ["../pbit_lsb_release", "--all"]
+    command = ["../lsb_release", "--all"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -26,7 +26,7 @@ class Test_LSB(unittest.TestCase):
     self.assertTrue(lines[3].startswith("Release:"))
     self.assertTrue(lines[4].startswith("Codename:"))
 
-    command = ["../pbit_lsb_release", "-a"]
+    command = ["../lsb_release", "-a"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -42,14 +42,14 @@ class Test_LSB(unittest.TestCase):
 
   ####################################################################
   def test_codename(self):
-    command = ["../pbit_lsb_release", "--codename"]
+    command = ["../lsb_release", "--codename"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(stdout.startswith("Codename:"))
 
-    command = ["../pbit_lsb_release", "-c"]
+    command = ["../lsb_release", "-c"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -58,7 +58,7 @@ class Test_LSB(unittest.TestCase):
 
   ####################################################################
   def test_default(self):
-    command = ["../pbit_lsb_release"]
+    command = ["../lsb_release"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -67,14 +67,14 @@ class Test_LSB(unittest.TestCase):
 
   ####################################################################
   def test_description(self):
-    command = ["../pbit_lsb_release", "--description"]
+    command = ["../lsb_release", "--description"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(stdout.startswith("Description:"))
 
-    command = ["../pbit_lsb_release", "-d"]
+    command = ["../lsb_release", "-d"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -83,14 +83,14 @@ class Test_LSB(unittest.TestCase):
 
   ####################################################################
   def test_id(self):
-    command = ["../pbit_lsb_release", "--id"]
+    command = ["../lsb_release", "--id"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(stdout.startswith("Distributor ID:"))
 
-    command = ["../pbit_lsb_release", "-i"]
+    command = ["../lsb_release", "-i"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -99,14 +99,14 @@ class Test_LSB(unittest.TestCase):
 
   ####################################################################
   def test_release(self):
-    command = ["../pbit_lsb_release", "--release"]
+    command = ["../lsb_release", "--release"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(stdout.startswith("Release:"))
 
-    command = ["../pbit_lsb_release", "-r"]
+    command = ["../lsb_release", "-r"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -115,7 +115,7 @@ class Test_LSB(unittest.TestCase):
 
   ####################################################################
   def test_short(self):
-    command = ["../pbit_lsb_release", "--all", "--short"]
+    command = ["../lsb_release", "--all", "--short"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -124,7 +124,7 @@ class Test_LSB(unittest.TestCase):
     lines = [x for x in stdout.split(os.linesep) if x != ""]
     self.assertEqual(len(lines), 1)
 
-    command = ["../pbit_lsb_release", "--all", "-s"]
+    command = ["../lsb_release", "--all", "-s"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -133,84 +133,84 @@ class Test_LSB(unittest.TestCase):
     lines = [x for x in stdout.split(os.linesep) if x != ""]
     self.assertEqual(len(lines), 1)
 
-    command = ["../pbit_lsb_release", "--codename", "--short"]
+    command = ["../lsb_release", "--codename", "--short"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Codename:"))
 
-    command = ["../pbit_lsb_release", "--codename", "-s"]
+    command = ["../lsb_release", "--codename", "-s"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Codename:"))
 
-    command = ["../pbit_lsb_release", "--short"]
+    command = ["../lsb_release", "--short"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Version:"))
 
-    command = ["../pbit_lsb_release", "-s"]
+    command = ["../lsb_release", "-s"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Version:"))
 
-    command = ["../pbit_lsb_release", "--description", "--short"]
+    command = ["../lsb_release", "--description", "--short"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Description:"))
 
-    command = ["../pbit_lsb_release", "--description", "-s"]
+    command = ["../lsb_release", "--description", "-s"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Description:"))
 
-    command = ["../pbit_lsb_release", "--id", "--short"]
+    command = ["../lsb_release", "--id", "--short"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Distributor ID:"))
 
-    command = ["../pbit_lsb_release", "--id", "-s"]
+    command = ["../lsb_release", "--id", "-s"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Distributor ID:"))
 
-    command = ["../pbit_lsb_release", "--release", "--short"]
+    command = ["../lsb_release", "--release", "--short"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Release:"))
 
-    command = ["../pbit_lsb_release", "--release", "-s"]
+    command = ["../lsb_release", "--release", "-s"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Release:"))
 
-    command = ["../pbit_lsb_release", "--version", "--short"]
+    command = ["../lsb_release", "--version", "--short"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(not stdout.startswith("Version:"))
 
-    command = ["../pbit_lsb_release", "--version", "-s"]
+    command = ["../lsb_release", "--version", "-s"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
@@ -219,14 +219,14 @@ class Test_LSB(unittest.TestCase):
 
   ####################################################################
   def test_version(self):
-    command = ["../pbit_lsb_release", "--version"]
+    command = ["../lsb_release", "--version"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)
     stdout = stdout.decode()
     self.assertTrue(stdout.startswith("Version:"))
 
-    command = ["../pbit_lsb_release", "-v"]
+    command = ["../lsb_release", "-v"]
     lsb = subprocess.Popen(command, stdout = subprocess.PIPE)
     (stdout, _) = lsb.communicate()
     self.assertEqual(lsb.returncode, 0)

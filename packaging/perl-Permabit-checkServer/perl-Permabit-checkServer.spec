@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -39,9 +39,13 @@ BuildRequires:  perl(Scalar::Properties)
 BuildRequires:  perl(Test::Pod) >= 1.00
 # Dependencies
 Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
-Requires:       scam
-Requires:       redhat-lsb-core
 Requires:       perl-Permabit-Triage >= 1.02-21
+%if 0%{?rhel} && 0%{?rhel} >= 9
+Requires:       python3-pbit-lsb-release
+%else
+Requires:       redhat-lsb-core
+%endif
+Requires:       scam
 
 %description
 This package contains the Permabit checkServer utility.
@@ -91,6 +95,10 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Thu Sep 22 2022 Joe Shimkus <jshimkush@redhat.com> - 1.0-11
+- Made dependency providing lsb_release conditional on RHEL version;
+  redhat-lsb-core vs python3-pbit-lsb-release.
+
 * Thu Jun 02 2022 Joe Shimkus <jshimkus@redhat.com> - 1.0-10
 - Added Permabit::CheckServer::Utils and
   Permabit::CheckServer::Utils:Implementation.

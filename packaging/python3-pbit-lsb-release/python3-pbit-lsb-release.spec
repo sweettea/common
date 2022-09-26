@@ -2,8 +2,8 @@
 %define repo_branch main
 
 %define name python3-pbit-lsb-release
-%define version 1.0.1
-%define unmangled_version 1.0.1
+%define version 1.0.2
+%define unmangled_version 1.0.2
 %define release 1
 
 Summary: %{name}
@@ -31,6 +31,10 @@ Requires: python3
 %description
 UNKNOWN
 
+AutoProv: no
+Provides: lsb_release
+Conflicts: lsb_release
+
 %prep
 %setup -n %{repo_name}-%{repo_branch}
 
@@ -40,7 +44,8 @@ UNKNOWN
 %install
 (cd python/pbit_lsb_release && \
   python3 setup.py install --single-version-externally-managed -O1 \
-    --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES)
+    --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES \
+    --install-scripts %{_bindir})
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -49,5 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Thu Sep 22 2022 Joe Shimkus <jshimkush@redhat.com> - 1.0.2-1
+- Renamed installed binary to lsb_release as a drop-in replacement for
+  lsb_release.
+
 * Tue Jul 26 2022 Joe Shimkus <jshimkush@redhat.com> - 1.0.1-1
 - Make functional rpm for RHEL earlier than 9.0.
