@@ -212,7 +212,7 @@ if (isAlbireo()) {
   } elsif (isOotpa() || isCentOS8()) {
     $CURRENT_KERNELS = '4.18.0-.*\.(|1.2.)el8(|_0).x86_64(|\+debug)';
   } elsif (isPlow()) {
-    $CURRENT_KERNELS = '5.14.0-.*.el9(|_0).x86_64(|\+debug)';
+    $CURRENT_KERNELS = '5.14.0-.*.el9(|_(0|1)).x86_64(|\+debug)';
   } elsif (isTwentySeven()) {
     $CURRENT_KERNELS = '4.*.fc27.x86_64';
   } elsif (isTwentyEight()) {
