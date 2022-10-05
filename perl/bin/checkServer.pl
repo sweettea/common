@@ -112,7 +112,7 @@ use Permabit::PlatformUtils qw(
 
 # These are used all over the place hence their position here at the
 # very top of the file
-my $arch             = uc(`uname -i`);
+my $arch             = uc(`uname -m`);
 my $HOSTNAME         = `hostname`;
 my $kernel           = `uname -r`;
 my $machine          = `uname -m`;
@@ -1795,7 +1795,7 @@ sub checkNFSMounts {
 ##
 sub _checkMounts {
   my %mounts = @_;
-  my $pbitMounts=`mount | fgrep /permabit`;
+  my $pbitMounts=`mount | grep -F /permabit`;
   my $errors = "";
   foreach my $point (keys %mounts) {
     my ($server, $share) = split(/:/, $mounts{$point});
