@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        30%{?dist}
+Release:        31%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -315,6 +315,11 @@ This package contains the Permabit Perl RemoteMachine module.
 
 %package -n perl-Permabit-RSVP
 Summary:        Permabit RSVP Perl Module
+%if 0%{?rhel} && 0%{?rhel} >= 9
+Requires:       python3-pbit-lsb-release
+%else
+Requires:       redhat-lsb-core
+%endif
 
 %description -n perl-Permabit-RSVP
 This package contains the Permabit Perl RSVP modules.
@@ -437,6 +442,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Thu Oct 13 2022 Joe Shimkus <jshimkush@redhat.com> - 1.03-31
+- Add lsb_release provider dependency to perl-Permabit-RSVP.
+
 * Fri Sep 09 2022 Joe Shimkus <jshimkush@redhat.com> - 1.03-30
 - Updated RSVP_t1.pm for obsoleted classes.
 
