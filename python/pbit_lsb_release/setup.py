@@ -31,13 +31,13 @@ def versioned(src):
 setup = functools.partial(
           setuptools.setup,
           name = python_prefixed(package_name),
-          version = "1.0.2",
+          version = "1.0.3",
           description = python_prefixed(package_name),
           author = "Joe Shimkus",
           author_email = "jshimkus@redhat.com",
           packages = setuptools.find_packages(exclude = []),
           entry_points = {
-            "console_scripts" : "{0} = src:lsb_command".format("lsb_release")
+            "console_scripts" : "{0} = pbit_lsb_release:lsb_command".format("lsb_release")
           },
           install_requires = [],
           zip_safe = False

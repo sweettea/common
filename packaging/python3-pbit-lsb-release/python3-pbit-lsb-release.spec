@@ -1,59 +1,70 @@
+%global modname pbit-lsb-release
+
 %define repo_name common
 %define repo_branch main
 
-%define name python3-pbit-lsb-release
-%define version 1.0.2
-%define unmangled_version 1.0.2
+%define version 1.0.3
+%define unmangled_version 1.0.3
 %define release 1
 
-Summary: %{name}
-Name: %{name}
+Name: python3-%{modname}
 Version: %{version}
 Release: %{release}
-URL:     https://github.com/dm-vdo/common
-Source0: %{url}/archive/refs/heads/main.tar.gz
+Summary: python3-%{modname}
 License: GPL2+
-Group: Development/Libraries
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Prefix: %{_prefix}
+URL:     https://gitlab.cee.redhat.com/jshimkus-bits/common
+Source0: %{url}/-/archive/%{repo_branch}/%{repo_name}-%{repo_branch}.tar.gz
+
 BuildArch: noarch
+
+Group: Development/Libraries
 
 %if 0%{?rhel} && 0%{?rhel} < 9
 BuildRequires: python39
+BuildRequires: python39-devel
+BuildRequires: python39-rpm-macros
 BuildRequires: python39-setuptools
+BuildRequires: python39-six
 Requires: python39
 %else
 BuildRequires: python3
+BuildRequires: python3-devel
+BuildRequires: python3-eventlet
+BuildRequires: python3-py
+BuildRequires: python3-rpm-macros
 BuildRequires: python3-setuptools
+BuildRequires: python3-six
 Requires: python3
 %endif
 
-%description
-UNKNOWN
+%?python_enable_dependency_generator
 
-AutoProv: no
+%description
+This package provides an lsb_release executable for platforms without one.
+
+# AutoReq: no
+# AutoProv: no
 Provides: lsb_release
 Conflicts: lsb_release
 
 %prep
-%setup -n %{repo_name}-%{repo_branch}
+%autosetup -n %{repo_name}-%{repo_branch}/python/pbit_lsb_release
 
 %build
-(cd python/pbit_lsb_release && python3 setup.py build)
+%py3_build
 
 %install
-(cd python/pbit_lsb_release && \
-  python3 setup.py install --single-version-externally-managed -O1 \
-    --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES \
-    --install-scripts %{_bindir})
+%py3_install
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%files -f python/pbit_lsb_release/INSTALLED_FILES
-%defattr(-,root,root)
+%files -n python3-%{modname}
+%{_bindir}/lsb_release
+%{python3_sitelib}/pbit_lsb_release/
+%{python3_sitelib}/python3_pbit_lsb_release-%{version}*
 
 %changelog
+* Fri Oct 21 2022 Joe Shimkus <jshimkush@redhat.com> - 1.0.3-1
+- Changed package generation per Red Hat example.
+
 * Thu Sep 22 2022 Joe Shimkus <jshimkush@redhat.com> - 1.0.2-1
 - Renamed installed binary to lsb_release as a drop-in replacement for
   lsb_release.
