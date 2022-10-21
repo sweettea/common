@@ -12,8 +12,8 @@ Version: %{version}
 Release: %{release}
 Summary: python3-%{modname}
 License: GPL2+
-URL:     https://gitlab.cee.redhat.com/jshimkus-bits/common
-Source0: %{url}/-/archive/%{repo_branch}/%{repo_name}-%{repo_branch}.tar.gz
+URL:     https://github.com/dm-vdo/common
+Source0: %{url}/archive/refs/heads/main.tar.gz
 
 BuildArch: noarch
 
