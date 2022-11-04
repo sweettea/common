@@ -105,7 +105,7 @@ my %PROPERTIES
      _journalCursor => undef,
      # @ple last kernel log cursor
      _journalKernelCursor => undef,
-     # @ple Start time for messages relevant to this RemoveMachine
+     # @ple Start time for messages relevant to this RemoteMachine
      _journalStartTime => 0,
     );
 ##
@@ -290,7 +290,7 @@ sub _logMachineInfo {
 
   # Obtain kernel architecture information
   # Includes: kernel release and processor type
-  $self->sendCommand('uname -pr');
+  $self->sendCommand('uname -mr');
   my $arch = $self->getStdout();
   chomp($arch);
 
