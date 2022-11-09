@@ -1753,15 +1753,9 @@ sub checkNFSMounts {
     %uniqueMounts = (
        "/permabit/not-backed-up"  => "*:/permabit/not-backed-up",
                     );
-    if (defined($server)) {
-      if (_isBeaker()) {
-        $uniqueMounts{"/permabit/release"}
-          = "$server:/vdo_permabit_release_nfs";
-        if (_isFarm()) {
-          $uniqueMounts{"/permabit/datasets"}
-            = "$server:/vdo_permabit_datasets_nfs";
-        }
-      }
+    if (defined($server) && _isBeaker() && _isFarm()) {
+      $uniqueMounts{"/permabit/datasets"}
+        = "$server:/vdo_permabit_datasets_nfs";
     }
   } else {
     %uniqueMounts = ();

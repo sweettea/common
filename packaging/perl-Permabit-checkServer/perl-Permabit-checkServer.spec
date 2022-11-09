@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -95,6 +95,11 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Tue Nov 08 2022 Joe Shimkus <jshimkus@redhat.com> - 1.0-12
+- Remove check for /permabit/release when operating in a Beaker environment;
+  the mount point is optional for Beaker and is externally specified when
+  needed.
+
 * Thu Sep 22 2022 Joe Shimkus <jshimkush@redhat.com> - 1.0-11
 - Made dependency providing lsb_release conditional on RHEL version;
   redhat-lsb-core vs python3-pbit-lsb-release.
