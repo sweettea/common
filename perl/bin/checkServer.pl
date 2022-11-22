@@ -230,9 +230,9 @@ if (isAlbireo()) {
   } elsif (isThirtyFour()) {
     $CURRENT_KERNELS = '5.*.fc34.x86_64';
   } elsif (isThirtyFive()) {
-    $CURRENT_KERNELS = '5.*.fc35.x86_64';
+    $CURRENT_KERNELS = '(5|6).*.fc35.x86_64';
   } elsif (isThirtySix()) {
-    $CURRENT_KERNELS = '5.*.fc36.x86_64';
+    $CURRENT_KERNELS = '(5|6).*.fc36.x86_64';
   } elsif (isRawhide()) {
     # Since Fedora Rawhide's kernel changes so frequently
     # we can only check basic formatting.
