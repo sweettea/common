@@ -986,7 +986,8 @@ sub checkLoopDevices {
   for my $line (@lines) {
     my $device = $line;
     $device =~ s/:.*$//;
-    if ($line =~ m,/home/big_file,) {
+    if ((($line =~ m,/home/big_file,) || ($line =~ m,/big_file,))
+        && (_isBeaker() || _isDevVM())) {
       next;
     }
     error("Loop device $device found",
