@@ -82,6 +82,7 @@ our @EXPORT_OK = qw(
   isThirtyFour
   isThirtyFive
   isThirtySix
+  isThirtySeven
   isRawhide
   isUbuntu
   isVivid
@@ -321,7 +322,7 @@ sub getDistroInfo {
     if (($major == 27) || ($major == 28) || ($major == 29)
         || ($major == 30) || ($major == 31) || ($major == 32)
         || ($major == 33) || ($major == 34) || ($major == 35)
-	|| ($major == 36)) {
+	|| ($major == 36) || ($major == 37)) {
       return "FEDORA$major";
     }
   } elsif (isSles($host)) {
@@ -554,7 +555,8 @@ BEGIN {
     debian => [qw(jessie lenny squeeze wheezy)],
     redHat => [qw(Santiago Maipo Ootpa Plow)],
     fedora => [qw(TwentySeven TwentyEight TwentyNine Thirty ThirtyOne
-	          ThirtyTwo ThirtyThree ThirtyFour ThirtyFive ThirtySix Rawhide)],
+	          ThirtyTwo ThirtyThree ThirtyFour ThirtyFive ThirtySix 
+	          ThirtySeven Rawhide)],
     sles   => [],
     centOS => [qw(8)],
    };
