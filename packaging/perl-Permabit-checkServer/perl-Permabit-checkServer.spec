@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        14%{?dist}
+Release:        15%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -95,6 +95,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Fri Jan 20 2023 Chung Chung <cchung@redhat.com> - 1.0-15
+- Add Fedora 37 support
+
 * Tue Nov 22 2022 Joe Shimkus <jshimkus@redhat.com> - 1.0-14
 - Added /big_file to allowed loop devices.
 - Restricted allowed loop devices to Beaker or DevVM only.
