@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        18%{?dist}
+Release:        19%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -95,6 +95,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Tue May 09 2023 Chung Chung <cchung@redhat.com> - 1.0-19
+- skip ntpd check in FEDORA38
+
 * Fri Apr 21 2023 Chung Chung <cchung@redhat.com> - 1.0-18
 - Add checkServer and RSVP support for FEDORA38 
 

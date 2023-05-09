@@ -1046,7 +1046,8 @@ sub checkDaemons {
     #     we need to fix this at some point"
     if ((isCentOS8() || isOotpa() || isPlow()
          || isThirtyTwo() || isThirtyThree() || isThirtyFour()
-         || isThirtyFive() || isThirtySix() || isThirtySeven())
+         || isThirtyFive() || isThirtySix() || isThirtySeven()
+         || isThirtyEight())
         && $daemon eq "ntpd") {
       next;
     }
