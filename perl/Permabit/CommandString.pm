@@ -111,12 +111,16 @@ our %COMMANDSTRING_PROPERTIES
 
 our %COMMANDSTRING_INHERITED_PROPERTIES
   = (
-     # @ple Process environment hash
-     environment => { },
+     # Process environment hash
+     environment   => { },
      # Run directory of commands
-     runDir      => undef,
+     runDir        => undef,
+     # The BlockDevice storage device
+     storageDevice => undef,
+     # The path to the VDO user tool binaries
+     userBinaryDir => undef,
      # The directory to put temp files in
-     workDir     => undef,
+     workDir       => undef,
     );
 
 ###############################################################################
@@ -144,6 +148,11 @@ sub new {
 
   if (defined($self->{environment})) {
     mergeToHash($self, env => $self->{environment});
+  }
+
+  $self->{userBinaryDir} //= $parent->{userBinaryDir};
+  if (defined($self->{userBinaryDir})) {
+    $self->{env}->{PATH} = "\$PATH:$self->{userBinaryDir}";
   }
 
   if ($parent->isa("Permabit::BinaryFinder")) {
@@ -229,7 +238,12 @@ sub addValueOption {
 sub updateBinary {
   my ($self) = assertNumArgs(1, @_);
   assertDefined($self->{name}, "Command has no name!");
-  $self->{binary} = $self->findBinary($self->{name});
+
+  if (defined($self->{storageDevice})) {
+    $self->{binary} = $self->{storageDevice}->findBinary($self->{name});
+  } else {
+    $self->{binary} = $self->findBinary($self->{name});
+  }
 }
 
 ###############################################################################
