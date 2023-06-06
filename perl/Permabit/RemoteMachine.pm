@@ -86,27 +86,29 @@ my @ancestorSessions;
 my %PROPERTIES
   = (
      # @ple A list of subs to run to clean up the machine after use.
-     _cleanupSteps    => [],
+     _cleanupSteps        => [],
      # @ple Whether or not logfiles should be compressed when they are saved.
-     compressLogs     => 1,
+     compressLogs         => 1,
      # @ple Set if logfiles cannot or should not be retrieved.
-     disableLogSaving => 0,
+     disableLogSaving     => 0,
      # @ple The machine this server should be run on
-     hostname         => undef,
+     hostname             => undef,
      # @ple the max number of hung task warnings to report in kern.log
-     hungTaskWarnings => 25,
+     hungTaskWarnings     => 25,
      # @ple Number of times to retry opening Permabit::BashSession
-     IPCRetries       => 5,
+     IPCRetries           => 5,
      # @ple The directory logfiles should be retrieved from
-     logDirectory     => '/var/log',
+     logDirectory         => '/var/log',
      # @ple Regexp for which files in logDirectory to retrieve
-     logfileRegexp    => ".*",
+     logfileRegexp         => ".*",
+     # The local path to the VDO user tool binaries
+     userBinaryDir        => "/",
      # @ple last general log cursor
-     _journalCursor => undef,
+     _journalCursor       => undef,
      # @ple last kernel log cursor
      _journalKernelCursor => undef,
      # @ple Start time for messages relevant to this RemoteMachine
-     _journalStartTime => 0,
+     _journalStartTime    => 0,
     );
 ##
 
@@ -470,6 +472,26 @@ sub debugSendCmd {
   my $ret = $self->sendCommand(@_);
   $log->debug("debugSendCmd: $self output:\n" . $self->_getCmdOutput());
   return $ret;
+}
+
+#############################################################################
+# Find the requested executable locally.
+#
+# @param executable The name of the executable to look for
+#
+# @return The path to the executable or undef
+##
+sub findNamedExecutable {
+  my ($self, $executable) = assertNumArgs(2, @_);
+  my $searchPath = makeFullPath($self->{userBinaryDir}, $executable);
+  my $result = runCommand($self->getName(), "test -x $searchPath");
+
+  if ($result->{returnValue} != 1) {
+    $self->{_executables}->{$executable} = $searchPath;
+    return $searchPath;
+  }
+
+  return undef;
 }
 
 ###############################################################################

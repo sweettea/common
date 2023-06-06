@@ -151,6 +151,11 @@ sub new {
   }
 
   $self->{userBinaryDir} //= $parent->{userBinaryDir};
+  if (defined($self->{storageDevice})) {
+    my $machine = $self->{storageDevice}->getMachine();
+    $self->{userBinaryDir} //= $machine->{userBinaryDir};
+  }
+
   if (defined($self->{userBinaryDir})) {
     $self->{env}->{PATH} = "\$PATH:$self->{userBinaryDir}";
   }
