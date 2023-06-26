@@ -2402,7 +2402,8 @@ sub checkSmartEnabled {
 ##
 sub checkPythonHacks {
   my $badPythonModule = "vdoInstrumentation";
-  my @dirs = split(/\s+/, `python -c 'import sys; print(" ".join(sys.path))'`);
+  my @dirs = split(/\s+/,
+                   `python3 -c 'import sys; print(" ".join(sys.path))'`);
   foreach my $dir (@dirs) {
     foreach my $suffix ("py", "pyc") {
       my $badFile = "$dir/$badPythonModule.$suffix";
