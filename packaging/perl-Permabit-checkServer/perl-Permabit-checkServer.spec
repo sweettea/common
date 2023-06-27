@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -95,6 +95,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Mon Jun 25 2023 Ken Raeburn <raeburn@redhat.com> - 1.0-20
+- Use python3 in check for vdoInstrumentation module.
+
 * Tue May 09 2023 Chung Chung <cchung@redhat.com> - 1.0-19
 - skip ntpd check in FEDORA38
 
