@@ -20,7 +20,6 @@ use base qw(Exporter);
 
 our @EXPORT_OK = qw(
   %CODENAME_LOOKUP
-  %COMPONENTS_LOOKUP
   %TEST_INFO
   %TRIAGE_INFO
   albireoPerfHosts
@@ -58,38 +57,12 @@ our %TRIAGE_INFO = (
   'Grapher'              => 'OPS',
 );
 
-# Albireo specific jira components
-my @ALB_COMPONENTS = (
-  'Test',
-  'Data Set',
-  'Documentation',
-  'SDK (Software)',
-);
-
-# VDO specific jira components
-my @VDO_COMPONENTS = (
-  'Software',
-);
-
-# IMF specific jira components
-my @IMF_COMPONENTS = (
-  'FAI',
-  'Perl',
-);
-
 # Jira project to codename string hash
 our %CODENAME_LOOKUP = (
   ALB     => "ALBIREO_PROJECT_CODENAME",
   IMF     => "IMF_PROJECT_CODENAME",
   VDO     => "VDO_PROJECT_CODENAME",
   ALBSCAN => "ALBSCANLINUX_PROJECT_CODENAME",
-);
-
-# Jira project to components hash
-our %COMPONENTS_LOOKUP = (
- ALB => \@ALB_COMPONENTS,
- IMF => \@IMF_COMPONENTS,
- VDO => \@VDO_COMPONENTS,
 );
 
 # Test info

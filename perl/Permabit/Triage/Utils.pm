@@ -41,8 +41,6 @@ use Permabit::SystemUtils qw(
 );
 use Permabit::Triage::TestInfo qw(
   %CODENAME_LOOKUP
-  %COMPONENTS_LOOKUP
-  %TEST_INFO
   %TRIAGE_INFO
 );
 use Permabit::Triage::Utils::Implementation;
