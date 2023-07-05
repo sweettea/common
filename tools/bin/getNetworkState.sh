@@ -16,7 +16,7 @@ netstat -rn
 arp -na
 
 # Find out if the e1000 driver is on this machine
-dmesg | fgrep "$E1000_DRIVER"
+dmesg | grep -F "$E1000_DRIVER"
 
 if test -f /var/log/boot -o -f /var/log/boot.gz ; then
   # Debian

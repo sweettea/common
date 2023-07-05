@@ -1175,7 +1175,7 @@ sub syncJournal {
 sub grepLog {
   my ($self, $file, $position, $string) = assertNumArgs(4, @_);
   $position ||= 0;
-  my $cmd = "sudo tail -n +$position $file | fgrep -q '$string'";
+  my $cmd = "sudo tail -n +$position $file | grep -F -q '$string'";
   if ($self->sendCommand($cmd) == 0) {
     return 1;
   }
@@ -1194,7 +1194,7 @@ sub grepLog {
   }
 
   # Probably rolled.
-  $cmd = "sudo cat $file.1 $file | tail -n +$position | fgrep -q '$string'";
+  $cmd = "sudo cat $file.1 $file | tail -n +$position | grep -F -q '$string'";
   return ($self->sendCommand($cmd) == 0);
 }
 
