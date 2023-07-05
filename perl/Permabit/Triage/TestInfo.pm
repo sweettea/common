@@ -55,7 +55,6 @@ our %TRIAGE_INFO = (
   'Albireo'              => 'ALB',
   'FAI'                  => 'OPS',
   'Perl'                 => 'VDO',
-  'Modelling'            => 'OPS',
   'Grapher'              => 'OPS',
 );
 
@@ -75,7 +74,6 @@ my @VDO_COMPONENTS = (
 # IMF specific jira components
 my @IMF_COMPONENTS = (
   'FAI',
-  'Modelling',
   'Perl',
 );
 
@@ -84,7 +82,6 @@ our %CODENAME_LOOKUP = (
   ALB     => "ALBIREO_PROJECT_CODENAME",
   IMF     => "IMF_PROJECT_CODENAME",
   VDO     => "VDO_PROJECT_CODENAME",
-  SANBLOX => "SANBLOX_PROJECT_CODENAME",
   ALBSCAN => "ALBSCANLINUX_PROJECT_CODENAME",
 );
 
@@ -105,14 +102,6 @@ our %TEST_INFO = (
     prefix              => 'AlbireoTest::',
     runLogDirs          => [qr/Albireo\w*_Tests/],
   },
-  ModellingTest =>
-  {
-    component           => 'Modelling',
-    project             => 'IMF',
-    namePattern         => 'ModellingTest::(.*).log',
-    prefix              => 'ModellingTest::',
-    runLogDirs          => [qr/Modelling\w*_Tests/],
-  },
   Cunit =>
   {
     component           => 'SDK (Software)',
@@ -128,14 +117,6 @@ our %TEST_INFO = (
     prefix              => '',
     namePattern         => '[run|capture|html]_(.*).log',
     runLogDirs          => ['Albireo_Cunit_Lcov_Tests'],
-  },
-  LabTest =>
-  {
-    component           => 'FAI',
-    project             => 'IMF',
-    namePattern         => 'LabTest::(.*).log',
-    prefix              => 'LabTest::',
-    runLogDirs          => ['Lab_Tests'],
   },
   PerlTest =>
   {
