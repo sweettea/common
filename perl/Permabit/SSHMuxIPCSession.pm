@@ -487,9 +487,11 @@ sub close {
   $log->debug("closing session on mux pid $self->{pid} socket"
               . " $self->{ctlSocket}");
   $self->block_signals(SIGCHLD);
-  close $self->{mstdin};        # Trigger the mux-session to exit.
+  # Trigger the mux-session to exit.
+  close $self->{mstdin} || warn("mstdin close failed");
   $self->{expect_eof} = 1;
-  eval {                        # In case already exited.
+  # In case already exited.
+  eval {
     # TODO: This will hang until all sessions are closed. It might be
     #       be better to start with a SIGINT, do a waitpid(WNOHANG) in a
     #       loop until $self->{timeout} is reached and then switch to
@@ -505,8 +507,11 @@ sub close {
   eval {
     $self->drain_and_log();
   };
-  close $self->{mstdout};
-  close $self->{mstderr};
+  if ($EVAL_ERROR) {
+    warn("ignoring drain_and_log $EVAL_ERROR");
+  }
+  close $self->{mstdout} || warn("mstdout close failed");
+  close $self->{mstderr} || warn("mstderr close failed");
 
   delete $self->{pid};
   delete $self->{ctlSocket};
