@@ -198,6 +198,21 @@ sub setProcFile {
 }
 
 ############################################################################
+# Get the boot id of the machine.
+#
+# The boot id changes with every boot; by recording the current boot id and
+# querying the machine for a change in the boot id (using string comparison)
+# this is a reliable way to determine if a system has rebooted.
+#
+# @return the boot id of the most recent machine boot or the empty string if
+#         the machine is not responding
+##
+sub bootId {
+  my ($self) = assertNumArgs(1, @_);
+  return athinfo($self->{hostname}, "boot_id");
+}
+
+############################################################################
 # Get the time that the machine has been up
 #
 # @return the number of seconds since the machine has been booted,

@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        33%{?dist}
+Release:        34%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -442,6 +442,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Thu Jul 06 2023 Joe Shimkus <jshimkus@redhat.com> - 1.03-34
+- Changed determination of LabMachine reboot to use boot_id.
+
 * Fri Apr 21 2023 Chung Chung <cchung@redhat.com> - 1.03-33
 - Add Fedora 38 support.
 

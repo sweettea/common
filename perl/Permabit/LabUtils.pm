@@ -475,6 +475,7 @@ sub _restartMachinesAndWait {
   my %labMachines = map { ($_, _makeLabMachine($_)) } @$hostnames;
   my @labMachines = values(%labMachines);
   while (@labMachines) {
+    my %preRestartBootIds = map { $_->{hostname} => $_->bootId() } @labMachines;
     my $restartTime = time();
     map { $_->$restart() } @labMachines;
 
@@ -483,15 +484,15 @@ sub _restartMachinesAndWait {
       my @troubles;
       my $period = time() - $restartTime;
       for my $labMachine (@labMachines) {
-        my $uptime = $labMachine->uptime();
-        if ($uptime eq "") {
+        my $bootId = $labMachine->bootId();
+        if ($bootId eq "") {
           push(@troubles, "$labMachine->{hostname} is not responding");
         } elsif ($restart eq 'powerOn') {
           # We assume either the node was already confirmed to have been off,
           # or the caller is just trying to ensure that the node is on, and
           # either way it's sufficient for us to be able to retrieve the
-          # uptime.
-        } elsif ($uptime > time() - $restartTime) {
+          # boot id.
+        } elsif ($bootId eq $preRestartBootIds{$labMachine->{hostname}}) {
           push(@troubles, "$labMachine->{hostname} has not shutdown");
         }
       }
