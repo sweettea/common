@@ -366,9 +366,9 @@ sub main {
        \&checkLoopDevices,
        \&checkNFSMounts,
        \&checkFstab,
-       #XXX: This should get fixed.  (OPS-16653)
-       (isCentOS() || isFedora() || isRedHat()) ? ()
-                                                : \&checkSSHkey,
+       # Do not check bunsen system unless it is
+       # pfarm or jfarm.
+       (_isAnsible() && !(_isJFarm() || _isPFarm())) ? () : \&checkSSHkey,
        \&checkSSHDconfig,
        \&checkSudoers,
 
