@@ -208,6 +208,9 @@ if (isAlbireo()) {
       }
     }
   }
+  if (!isOotpa() && !isMaipo()) {
+    push(@BAD_FILES, "/u1/zubenelgenubi*");
+  }
 
   if (isMaipo()) {
     $CURRENT_KERNELS = '3.10.0-.*\.el7(|\.pbit[0-9]+).x86_64';
