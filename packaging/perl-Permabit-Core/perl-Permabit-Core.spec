@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        34%{?dist}
+Release:        39%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -442,8 +442,25 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
-* Thu Jul 06 2023 Joe Shimkus <jshimkus@redhat.com> - 1.03-34
+* Thu Jul 06 2023 Joe Shimkus <jshimkus@redhat.com> - 1.03-39
 - Changed determination of LabMachine reboot to use boot_id.
+
+* Wed Jul 05 2023 Chung Chung <cchung@redhat.com> - 1.03-38
+- Replace fgrep with 'grep -F' in RemoteMachine.pm.
+
+* Wed Jul 05 2023 Michael Sclafani <sclafani@redhat.com> - 1.03-37
+- Remove unused references in Utils.pm and TestInfo.pm.
+
+* Wed Jul 05 2023 Corwin Coburn <corwin@redhat.com> - 1.03-36
+- Add log of version file contents.
+
+* Wed Jun 06 2023 Susan LeGendre-McGhee <slegendr@redhat.com> - 1.03-35
+- Add RemoteMachine userBinaryDir property.
+- At CommandString instantiation, if not already defined, get userBinaryDir
+  from RemoteMachine.
+
+* Tue Jun 05 2023 Susan LeGendre-McGhee <slegendr@redhat.com> - 1.03-34
+- Add storageDevice and userBinaryDir as CommandString inherited properties.
 
 * Fri Apr 21 2023 Chung Chung <cchung@redhat.com> - 1.03-33
 - Add Fedora 38 support.

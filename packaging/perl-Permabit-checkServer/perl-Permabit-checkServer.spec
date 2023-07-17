@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -95,6 +95,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Thu Jul 13 2023 Ken Raeburn <raeburn@redhat.com> - 1.0-21
+- For current RHEL add /u1/zubenelgenubi* to BAD_FILES.
+
 * Mon Jun 25 2023 Ken Raeburn <raeburn@redhat.com> - 1.0-20
 - Use python3 in check for vdoInstrumentation module.
 
@@ -102,7 +105,7 @@ find %{buildroot} -type f -name .packlist -delete
 - skip ntpd check in FEDORA38
 
 * Fri Apr 21 2023 Chung Chung <cchung@redhat.com> - 1.0-18
-- Add checkServer and RSVP support for FEDORA38 
+- Add checkServer and RSVP support for FEDORA38
 
 * Mon Mar 27 2023 Chung Chung <cchung@redhat.com> - 1.0-17
 - Add support for the latest RHEL8 uname format
