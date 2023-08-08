@@ -920,7 +920,7 @@ sub checkBadPrograms {
 sub checkRunningPrograms {
   my $foundRunningProgram = 0;
   foreach my $prog (@BAD_PROGRAMS) {
-    if (system("pgrep -x $prog >/dev/null") == 0) {
+    if (system("pgrep -f -x $prog >/dev/null") == 0) {
       error("$prog is running", "pkill -x $prog");
       $foundRunningProgram = 1;
     }

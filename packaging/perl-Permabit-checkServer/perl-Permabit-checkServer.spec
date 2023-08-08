@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        21%{?dist}
+Release:        22%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -95,6 +95,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Mon Aug 07 2023 Chung Chung <cchung@redhat.com> - 1.0-22
+- Add -f in pgrep for program name longer than 15 characters.
+
 * Thu Jul 13 2023 Ken Raeburn <raeburn@redhat.com> - 1.0-21
 - For current RHEL add /u1/zubenelgenubi* to BAD_FILES.
 
