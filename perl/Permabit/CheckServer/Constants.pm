@@ -91,7 +91,7 @@ our @DIST_CLASSES = qw(CENTOS8
 # The following are basic constants used
 our $BIGMEM = 16777216;  # Minimal amount to belong in BIGMEM class
 our $EXPERIMENTAL_HWRAID_SIZE = 764838674432; # RAID size with 6 120G SSD
-our $MAX_KERN_LOG_SIZE    = 55 * $MB;
+our $MAX_KERN_LOG_SIZE    = 100 * $MB;
 our $MEGARAID_DEVICE_SIZE = 892311961600;
 our $MEGARAID_PARTITION   = getScamVar('MEGARAID') . '-part1';
 

@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -95,6 +95,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Tue Oct 03 2023 Chung Chung <cchung@redhat.com> - 1.0-23
+- Increase MAX_KERN_LOG_SIZE limit to 100M
+
 * Mon Aug 07 2023 Chung Chung <cchung@redhat.com> - 1.0-22
 - Add -f in pgrep for program name longer than 15 characters.
 
