@@ -327,6 +327,7 @@ sub main {
     \&checkISCSITarget,
     \&checkISCSIInitiator,
     (_isDevVM() || _isBeaker()) ? () : \&checkPermabitHostname,
+    \&checkPMIFarm,
   );
   # Additional checks that we want to run concurrently with the above.
   # Any fixes provided by them are applied after the fixes for the
@@ -485,6 +486,22 @@ sub error {
 ##
 sub isRoot {
   return (($UID == 0) || ($EUID == 0));
+}
+
+sub checkPMIFarm {
+  my @deviceList=("vdc", "vdd", "vde", "vdf", "vdg");
+  if (!_isPMIFarm()) {
+    return;
+  }
+  foreach my $device (@deviceList) {
+    my $hasFS = `wipefs -n /dev/$device`;
+    if ($hasFS ne "") {
+      push(@fixes, "wipefs --all --force /dev/$device");
+      push(@fixes, "dd if=/dev/zero of=/dev/$device bs=1M count=2000");
+      error("$device is not clean, $hasFS");
+    }
+  }
+ return;
 }
 
 ######################################################################
@@ -1121,6 +1138,21 @@ sub checkRSVPClasses {
     push(@goodClasses, 'VDO');
   }
 
+  # Check whether we're on a pmifarm and therefore make sure we're a member of
+  # both ALBIREO-PMI, and VDO-PMI.
+  #XXX: Note that the current existence of ALBIREO-PMI, and VDO-PMI being
+  #     separate entities is on its way out.  Upon which, this section will
+  #     succeed the next one, and then eventually the classes will be combined.
+  if (_isPMIFarm()) {
+    push(@goodClasses, 'ALBIREO-PMI', 'VDO-PMI');
+
+    _assertMemberOfOnly(@goodClasses,
+                        uc(_getOsClass()),
+                        $arch);
+
+    return;
+  }
+
   if (_isAlbPerf()) {
     push(@goodClasses, 'ALBIREO-PMI');
 
@@ -1484,7 +1516,11 @@ sub _getPartitionDevice {
     # If logical volume, dereference the device mapper link
     return `basename \$(readlink $1)`;
   }
-
+  # For pmifarm, the partition device is /u1
+  # and it is /dev/vdb
+  if (_isPMIFarm()) {
+    return "vdb";
+  }
   error("Unable to find partition containing /u1");
   return "none";
 }
@@ -1657,6 +1693,13 @@ sub _isJFarm {
 ##
 sub _isPFarm {
   return _hostInList('pfarm');
+}
+
+######################################################################
+# Check if this host is a pfarm class machine
+##
+sub _isPMIFarm {
+  return _hostInList('pmifarm');
 }
 
 ######################################################################
@@ -2507,6 +2550,15 @@ sub checkTestStorageDevice {
                      "/dev/xvda2",
                      "/dev/sda8"
                     );
+
+  if (_isPMIFarm()) {
+    my @pmiScratchDevices = glob("/dev/vdo_scratchdev_vd*");
+    if (!@pmiScratchDevices) {
+      error("unable to locate test storage device");
+      return;
+    }
+    push(@testDevices, @pmiScratchDevices);
+  }
   my $megaraid = getScamVar("MEGARAID");
   if ($megaraid) {
     chomp($megaraid);
