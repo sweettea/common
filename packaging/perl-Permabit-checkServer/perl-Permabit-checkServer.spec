@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -95,6 +95,10 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Wed Dec 06 2023 Chung Chung <cchung@redhat.com> - 1.0-25
+- Add support for Fedora 39.
+- Use perl.yaml file to check internal NFS mount.
+
 * Tue Nov 03 2023 Chung Chung <cchung@redhat.com> - 1.0-24
 - Add support for pmifarms
 

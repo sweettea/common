@@ -110,6 +110,7 @@ use Permabit::PlatformUtils qw(
   isThirtySix
   isThirtySeven
   isThirtyEight
+  isThirtyNine
   isRawhide
 );
 
@@ -244,6 +245,8 @@ if (isAlbireo()) {
     $CURRENT_KERNELS = '6.*.fc37.x86_64';
   } elsif (isThirtyEight()) {
     $CURRENT_KERNELS = '6.*.fc38.x86_64';
+  } elsif (isThirtyNine()) {
+    $CURRENT_KERNELS = '6.*.fc39.x86_64';
   } elsif (isRawhide()) {
     # Since Fedora Rawhide's kernel changes so frequently
     # we can only check basic formatting.
@@ -1068,7 +1071,7 @@ sub checkDaemons {
     if ((isCentOS8() || isOotpa() || isPlow()
          || isThirtyTwo() || isThirtyThree() || isThirtyFour()
          || isThirtyFive() || isThirtySix() || isThirtySeven()
-         || isThirtyEight())
+         || isThirtyEight() || isThirtyNine())
         && $daemon eq "ntpd") {
       next;
     }
@@ -1295,6 +1298,7 @@ sub _getOsClass {
     fedora36  => \&isThirtySix,
     fedora37  => \&isThirtySeven,
     fedora38  => \&isThirtyEight,
+    fedora39  => \&isThirtyNine,
     rawhide   => \&isRawhide,
   );
   # Check and return the version for everything else
