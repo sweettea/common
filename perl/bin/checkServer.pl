@@ -80,6 +80,7 @@ use Permabit::CheckServer::Utils qw(
 );
 use Permabit::AsyncSub;
 use Permabit::Constants;
+use Permabit::Internals::CheckServer::Host;
 use Permabit::Triage::TestInfo qw(:albireo);
 use Permabit::Utils qw(
   findExecutable
@@ -1805,6 +1806,9 @@ sub checkNFSMounts {
   # checked
   my %uniqueMounts = ();
   my $server = redhatNFSServer();
+  my %nfsInternalMounts =
+    Permabit::Internals::CheckServer::Host->new()->getPermabitMounts();
+
   if (_isDevVM() || _isBeaker()) {
     # NFS server names will vary.
     %uniqueMounts = (
@@ -1817,19 +1821,10 @@ sub checkNFSMounts {
   } else {
     %uniqueMounts = ();
     if (defined($server)) {
-      %uniqueMounts = (
-         "/permabit/user"           => "$server:/vdo_permabit_user_nfs",
-         "/permabit/builds"         => "$server:/vdo_permabit_builds_nfs",
-         "/permabit/system"         => "$server:/vdo_permabit_system_nfs",
-         "/permabit/release"        => "$server:/vdo_permabit_release_nfs",
-         "/permabit/RT"             => "$server:/vdo_permabit_RT_nfs",
-         "/permabit/not-backed-up"  => "$server:/vdo_permabit_nbu_nfs",
-         "/permabit/archive"        => "$server:/vdo_permabit_archive_nfs",
-         "/permabit/debian"         => "$server:/vdo_permabit_debian_nfs",
-         "/permabit/patent"         => "$server:/vdo_permabit_patent_nfs",
-         "/permabit/software"       => "$server:/vdo_permabit_software_nfs",
-         "/permabit/datasets"       => "$server:/vdo_permabit_datasets_nfs",
-                        );
+      for my $permabitMount (keys (%nfsInternalMounts)) {
+	$uniqueMounts{$permabitMount} =
+	  "$server:$nfsInternalMounts{$permabitMount}";
+      }
     }
   }
   # Check the mounts and report the errors that are returned
