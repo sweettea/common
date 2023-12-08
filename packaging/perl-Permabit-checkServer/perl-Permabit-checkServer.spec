@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        25%{?dist}
+Release:        26%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -56,6 +56,7 @@ This package contains the Permabit checkServer utility.
 %{perl_vendorlib}/Permabit/CheckServer/Constants/Implementation.pm
 %{perl_vendorlib}/Permabit/CheckServer/Utils.pm
 %{perl_vendorlib}/Permabit/CheckServer/Utils/Implementation.pm
+%{perl_vendorlib}/Permabit/Internals/CheckServer/Host.pm
 %{_bindir}/checkServer.pl
 
 %package Utils
@@ -76,11 +77,13 @@ checkServer and RSVP.
 cd packaging/perl-Permabit-checkServer
 
 mkdir -p bin/ lib/Permabit/CheckServer lib/Permabit/CheckServer/Constants lib/Permabit/CheckServer/Utils
+mkdir -p lib/Permabit/Internals/CheckServer
 
 cp -v ../../perl/Permabit/CheckServer/Constants.pm lib/Permabit/CheckServer/
 cp -v ../../perl/Permabit/CheckServer/Constants/Implementation.pm lib/Permabit/CheckServer/Constants/
 cp -v ../../perl/Permabit/CheckServer/Utils.pm lib/Permabit/CheckServer/
 cp -v ../../perl/Permabit/CheckServer/Utils/Implementation.pm lib/Permabit/CheckServer/Utils/
+cp -v ../../perl/Permabit/Internals/CheckServer/Host.pm lib/Permabit/Internals/CheckServer/
 cp -v ../../perl/bin/checkServer.pl bin/
 cp -v ../../perl/bin/cleanAndRelease.pl bin/
 cp -v ../../tools/bin/cleanFarm.sh bin/
@@ -95,6 +98,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Fri Dec 08 2023 Chung Chung <cchung@redhat.com> - 1.0-26
+- Add missing Host.pm installation
+
 * Wed Dec 06 2023 Chung Chung <cchung@redhat.com> - 1.0-25
 - Add support for Fedora 39.
 - Use perl.yaml file to check internal NFS mount.
