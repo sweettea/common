@@ -280,3 +280,8 @@ CheckServer::Host:
       # directory. If the directory is relative, it is taken relative to the
       # checkServer.pl bindir.
       CheckServer/Test: CheckServer::Test
+
+########################################################################
+# CheckServer prototype internal configuration.
+##
+Permabit::Internals::CheckServer::Host:
