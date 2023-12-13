@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        40%{?dist}
+Release:        41%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -443,6 +443,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Wed Dec 13 2023 Chung Chung <cchung@redhat.com> - 1.03-41
+- Update ConfiguredFactory.yaml with default Internals session.
+
 * Wed Dec 13 2023 Chung Chung <cchung@redhat.com> - 1.03-40
 - Add Permabit/Internals/CheckServer/Host.pm to perl-Permabit-NotUsed list.
 
