@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        39%{?dist}
+Release:        40%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -214,6 +214,7 @@ to run anything in the environments required by VDO.
 %{perl_vendorlib}/Permabit/CheckServer/Utils.pm
 %{perl_vendorlib}/Permabit/CheckServer/Utils/Implementation.pm
 %{perl_vendorlib}/Permabit/Future/Makefile
+%{perl_vendorlib}/Permabit/Internals/CheckServer/Host.pm
 %{perl_vendorlib}/Permabit/testcases/Assertions_t1.pm
 %{perl_vendorlib}/Permabit/testcases/AsyncSubTest.pm
 %{perl_vendorlib}/Permabit/testcases/BindUtils_t1.pm
@@ -442,6 +443,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Wed Dec 13 2023 Chung Chung <cchung@redhat.com> - 1.03-40
+- Add Permabit/Internals/CheckServer/Host.pm to perl-Permabit-NotUsed list.
+
 * Thu Jul 06 2023 Joe Shimkus <jshimkus@redhat.com> - 1.03-39
 - Changed determination of LabMachine reboot to use boot_id.
 
@@ -454,12 +458,12 @@ find %{buildroot} -type f -name .packlist -delete
 * Wed Jul 05 2023 Corwin Coburn <corwin@redhat.com> - 1.03-36
 - Add log of version file contents.
 
-* Wed Jun 06 2023 Susan LeGendre-McGhee <slegendr@redhat.com> - 1.03-35
+* Tue Jun 06 2023 Susan LeGendre-McGhee <slegendr@redhat.com> - 1.03-35
 - Add RemoteMachine userBinaryDir property.
 - At CommandString instantiation, if not already defined, get userBinaryDir
   from RemoteMachine.
 
-* Tue Jun 05 2023 Susan LeGendre-McGhee <slegendr@redhat.com> - 1.03-34
+* Mon Jun 05 2023 Susan LeGendre-McGhee <slegendr@redhat.com> - 1.03-34
 - Add storageDevice and userBinaryDir as CommandString inherited properties.
 
 * Fri Apr 21 2023 Chung Chung <cchung@redhat.com> - 1.03-33
