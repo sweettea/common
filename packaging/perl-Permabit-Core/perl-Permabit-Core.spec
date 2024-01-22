@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        41%{?dist}
+Release:        42%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -443,6 +443,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Mon Jan 22 2024 Chung Chung <cchung@redhat.com> - 1.03-42
+- Update RSVP.pm to add '(DISTRO:OS)' in rsvp message.
+
 * Wed Dec 13 2023 Chung Chung <cchung@redhat.com> - 1.03-41
 - Update ConfiguredFactory.yaml with default Internals session.
 

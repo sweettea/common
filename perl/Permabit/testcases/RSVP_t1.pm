@@ -691,6 +691,14 @@ sub _fakeCreateIssueDirectory {
 
 ######################################################################
 ##
+sub _fakeGetDistroInfo {
+  my ($host) = assertNumArgs(1, @_);
+  $log->debug("called _fakeGetDistroInfo");
+  return "RHEL8";
+}
+
+######################################################################
+##
 sub _fakeSendMail {
   my ($src, $dest, $subject, $contentType, $message, @files)
     = assertMinArgs(5, @_);
@@ -732,6 +740,7 @@ sub _asyncCallNotify {
     *Permabit::RSVP::createJiraIssue = \&_fakeCreateJiraIssue;
     *Permabit::RSVP::createIssueDirectory
       = \&_fakeCreateIssueDirectory;
+    *Permabit::RSVP::getDistroInfo = \&_fakeGetDistroInfo;
     *Permabit::RSVP::sendMail = \&_fakeSendMail;
     *Permabit::RSVP::sendChat = \&_fakeSendChat;
   }
