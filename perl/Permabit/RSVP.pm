@@ -1067,7 +1067,8 @@ sub _notifyMaintenance {
     $log->error("No ticket created for $host. Params sent: " . Dumper($params));
   }
   my ($firstLine) = split(/\n/, $params->{message});
-  my $rsvpMsg = $issueReference . ", " . $firstLine;
+  my $hostDistro = getDistroInfo($host);
+  my $rsvpMsg =  "(DISTRO:$hostDistro) " . $issueReference . ", " . $firstLine;
   if ($params->{assignee}) {
     eval {
       $self->addNextUser(host => $host,
