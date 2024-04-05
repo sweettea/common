@@ -179,7 +179,6 @@ our @BAD_PROGRAMS = qw(
   azurecreate
   azureserver
   azurefill
-  fio
   processCorruptorTrace
   processTrace
   vdo
