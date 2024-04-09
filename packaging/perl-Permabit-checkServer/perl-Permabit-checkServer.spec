@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        26%{?dist}
+Release:        27%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -98,6 +98,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Fri Apr 05 2024 Chung Chung <cchung@redhat.com> - 1.0-27
+- Remove fio from Constants.pm
+
 * Fri Dec 08 2023 Chung Chung <cchung@redhat.com> - 1.0-26
 - Add missing Host.pm installation
 
