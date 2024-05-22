@@ -111,6 +111,7 @@ use Permabit::PlatformUtils qw(
   isThirtySeven
   isThirtyEight
   isThirtyNine
+  isForty
   isRawhide
 );
 
@@ -247,6 +248,8 @@ if (isAlbireo()) {
     $CURRENT_KERNELS = '6.*.fc38.x86_64';
   } elsif (isThirtyNine()) {
     $CURRENT_KERNELS = '6.*.fc39.x86_64';
+  } elsif (isForty()) {
+    $CURRENT_KERNELS = '6.*.fc40.x86_64';
   } elsif (isRawhide()) {
     # Since Fedora Rawhide's kernel changes so frequently
     # we can only check basic formatting.
@@ -1069,9 +1072,9 @@ sub checkDaemons {
     #XXX: ntpd is not available in RHEL8, FEDORA32 and FEDORA33 anymore,
     #     we need to fix this at some point"
     if ((isCentOS8() || isOotpa() || isPlow()
-         || isThirtyTwo() || isThirtyThree() || isThirtyFour()
-         || isThirtyFive() || isThirtySix() || isThirtySeven()
-         || isThirtyEight() || isThirtyNine())
+	 || isThirtyTwo() || isThirtyThree() || isThirtyFour()
+	 || isThirtyFive() || isThirtySix() || isThirtySeven()
+	 || isThirtyEight() || isThirtyNine() || isForty())
         && $daemon eq "ntpd") {
       next;
     }
@@ -1299,6 +1302,7 @@ sub _getOsClass {
     fedora37  => \&isThirtySeven,
     fedora38  => \&isThirtyEight,
     fedora39  => \&isThirtyNine,
+    fedora40  => \&isForty,
     rawhide   => \&isRawhide,
   );
   # Check and return the version for everything else

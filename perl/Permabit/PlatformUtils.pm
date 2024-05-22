@@ -51,11 +51,11 @@ our @EXPORT_OK = qw(
   getPkgBundle
   getReleaseInfo
   isAlbireo
-  isDebian
   isCentOS
   isCentOS8
+  isDebian
   isDebianBased
-  isFedora
+  isFedora  
   isJessie
   isLenny
   isLinux
@@ -65,6 +65,7 @@ our @EXPORT_OK = qw(
   isPrecise
   isPreLenny
   isRaring
+  isRawhide
   isRedHat
   isSantiago
   isSles
@@ -72,6 +73,12 @@ our @EXPORT_OK = qw(
   isSles11SP3
   isSqueeze
   isStatler
+  isUbuntu
+  isVivid
+  isWheezy
+  isWindows
+  isXen
+  isXenial
   isTwentySeven
   isTwentyEight
   isTwentyNine
@@ -85,13 +92,7 @@ our @EXPORT_OK = qw(
   isThirtySeven
   isThirtyEight
   isThirtyNine
-  isRawhide
-  isUbuntu
-  isVivid
-  isWheezy
-  isWindows
-  isXen
-  isXenial
+  isForty
 );
 
 my $log = Log::Log4perl->get_logger(__PACKAGE__);
@@ -325,7 +326,7 @@ sub getDistroInfo {
         || ($major == 30) || ($major == 31) || ($major == 32)
         || ($major == 33) || ($major == 34) || ($major == 35)
 	|| ($major == 36) || ($major == 37) || ($major == 38)
-	|| ($major == 39)) {
+	|| ($major == 39) || ($major == 40)) {
       return "FEDORA$major";
     }
   } elsif (isSles($host)) {
@@ -559,7 +560,7 @@ BEGIN {
     redHat => [qw(Santiago Maipo Ootpa Plow)],
     fedora => [qw(TwentySeven TwentyEight TwentyNine Thirty ThirtyOne
 	          ThirtyTwo ThirtyThree ThirtyFour ThirtyFive ThirtySix 
-	          ThirtySeven ThirtyEight ThirtyNine Rawhide)],
+	          ThirtySeven ThirtyEight ThirtyNine Forty Rawhide)],
     sles   => [],
     centOS => [qw(8)],
    };
