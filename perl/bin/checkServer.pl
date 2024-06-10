@@ -385,6 +385,9 @@ sub main {
 
        \&checkMemory,
        ($machine eq 's390x') ? () : \&checkKDumpConfig,
+       # Disabled the check on machines for public github testing, ossbunsen farms
+       ($machine eq 's390x' || $HOSTNAME =~ /^ossbunsen-farm-/)
+          ? () : \&checkKExecLoaded,
        ($machine eq 's390x') ? () : \&checkKExecLoaded,
        \&checkClocksource,
        \&checkLVM,
