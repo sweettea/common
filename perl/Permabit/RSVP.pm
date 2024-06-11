@@ -555,13 +555,19 @@ sub releaseHost {
   my $timeout = $self->{releaseRetryTimeout};
   for (my $i = 0; $i < $self->{releaseRetryCount}; $i++) {
     foreach my $host (@hosts) {
+      $params{host} = $host;
+
+      # Verify host ownership before doing any additional checks.
+      $log->debug("Verifying ownership: $host");
+      $self->_request('verify_rsvp', {host => $params{host},
+                                      user => $params{user}}, 1);
+
       $error = $self->_checkReleaseState($host, $params{user});
       if ($error) {
         next;
       }
 
       $log->debug("Attempting to release: $host");
-      $params{host} = $host;
       $self->_request('release_rsvp', \%params, 1);
       # Host is released, remove from list
       @hosts = grep {$_ ne $host} @hosts;
