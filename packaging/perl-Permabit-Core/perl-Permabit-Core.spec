@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        44%{?dist}
+Release:        45%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -443,6 +443,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Fri Jul 19 2024 Andy Walsh <awalsh@redhat.com> - 1.03-45
+- Testcase.pm: Use updated script to capture console logs
+
 * Mon Jun 10 2024 Andy Walsh <awalsh@redhat.com> - 1.03-44
 - RSVP.pm: Verify host ownership before releasing
 

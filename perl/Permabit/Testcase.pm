@@ -115,7 +115,7 @@ use base qw(
 our $inTeardown = 0;
 
 my $GET_CONSOLE_LOG_CMD
-  = '/permabit/build/aws/lastrun/getCloudInstanceLog.py --stdout';
+  = '/permabit/build/tools/lastrun/getPSIConsoleLog.py';
 
 my $log = Log::Log4perl->get_logger(__PACKAGE__);
 
@@ -764,8 +764,7 @@ sub saveLogFiles {
     mkpath($hostDir);
     my $s = sub {
       # Save the console, if we can; we don't care if it fails.
-      runQuietCommand('localhost',
-                      "$GET_CONSOLE_LOG_CMD $host > $hostDir/console");
+      runCommand('localhost', "$GET_CONSOLE_LOG_CMD $host > $hostDir/console");
 
       runCommand($host, "sudo journalctl --sync");
       copyRemoteFilesAsRoot($host, "/", "var/log/", $hostDir);
