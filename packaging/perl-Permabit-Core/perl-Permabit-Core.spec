@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        45%{?dist}
+Release:        46%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -443,6 +443,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Wed Jul 31 2024 Chung Chung <cchung@redhat.com> - 1.03-46
+- Add support for FEDORANEXT OS class
+
 * Fri Jul 19 2024 Andy Walsh <awalsh@redhat.com> - 1.03-45
 - Testcase.pm: Use updated script to capture console logs
 

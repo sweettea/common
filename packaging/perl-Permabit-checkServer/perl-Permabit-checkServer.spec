@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        30%{?dist}
+Release:        31%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -98,6 +98,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Wed Jul 31 2024 Chung Chung <cchung@redhat.com> - 1.0-30
+- Add support for FEDORANEXT OS class
+
 * Mon Jun 10 2024 Chung Chung <cchung@redhat.com> - 1.0-29
 - Remove extra line of checkKExecLoaded test 
 

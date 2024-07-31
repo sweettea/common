@@ -94,6 +94,7 @@ use Permabit::PlatformUtils qw(
   isCentOS
   isCentOS8
   isFedora
+  isFedoraNext
   isMaipo
   isOotpa
   isPlow
@@ -222,6 +223,8 @@ if (isAlbireo()) {
       '4.18.0-.*\.(|1.2.)el8(|_[0-9])(|\.v[0-9]+).x86_64(|\+debug)';
   } elsif (isPlow()) {
     $CURRENT_KERNELS = '5.14.0-.*.el9(|_([0-9])).x86_64(|\+debug)';
+  } elsif (isFedoraNext()) {
+    $CURRENT_KERNELS = '.*.*next.*fc.*x86_64';
   } elsif (isTwentySeven()) {
     $CURRENT_KERNELS = '4.*.fc27.x86_64';
   } elsif (isTwentyEight()) {
@@ -1073,7 +1076,7 @@ sub checkDaemons {
   foreach my $daemon (keys(%DAEMONS)) {
     #XXX: ntpd is not available in RHEL8, FEDORA32 and FEDORA33 anymore,
     #     we need to fix this at some point"
-    if ((isCentOS8() || isOotpa() || isPlow()
+    if ((isCentOS8() || isOotpa() || isPlow() || isFedoraNext()
 	 || isThirtyTwo() || isThirtyThree() || isThirtyFour()
 	 || isThirtyFive() || isThirtySix() || isThirtySeven()
 	 || isThirtyEight() || isThirtyNine() || isForty())
@@ -1307,6 +1310,11 @@ sub _getOsClass {
     fedora40  => \&isForty,
     rawhide   => \&isRawhide,
   );
+  # Fedora linux-next kernel can run on any Fedora OS. Check to see if
+  # it is running next first before we check other OS.
+  if (isFedoraNext()) {
+    return "fedoranext";
+  }
   # Check and return the version for everything else
   foreach my $key (keys %versionMap) {
     if ($versionMap{$key}()) {

@@ -55,7 +55,8 @@ our @EXPORT_OK = qw(
   isCentOS8
   isDebian
   isDebianBased
-  isFedora  
+  isFedora
+  isFedoraNext
   isJessie
   isLenny
   isLinux
@@ -318,6 +319,9 @@ sub getDistroInfo {
     }
   } elsif (_lsbReleaseMatches($lsb, "Fedora")) {
     my $rel = uc($lsb->{Codename});
+    if (assertCommand($host, "uname -r")->{stdout} =~ m/.*next*.fc*.x86_64/) {
+      return "FEDORANEXT";
+    }
     if ($rel eq "RAWHIDE") {
       return "RAWHIDE";
     }
@@ -419,6 +423,22 @@ sub isPreLenny {
   my $lsb = _getLsbRelease($host);
   return (_lsbReleaseMatches($lsb, "Debian")
           && ($lsb->{Release} lt $LENNY_DEBIAN_VERSION));
+}
+
+#######################################################################
+# Check if a host is running Fedora and using the linux-next kernel.
+# If the host is, uname kernel-release contains the keyword "next".
+#
+# @param host   The host
+##
+sub isFedoraNext {
+  my ($host) = assertMinMaxArgs(['localhost'], 0, 1, @_);
+  my $lsb = _getLsbRelease($host);
+  if (_lsbReleaseMatches($lsb, "Fedora")) {
+    return (assertCommand($host, "uname -r")->{stdout}
+            =~ m/.*.*next.*fc.*x86_64/);
+  }
+  return 0;
 }
 
 ######################################################################
