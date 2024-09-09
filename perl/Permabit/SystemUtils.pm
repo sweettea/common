@@ -456,6 +456,8 @@ sub _doSystem {
   $result->{commandString}  = $commandString;
   $result->{wrappedCommand} = $wrappedCmd;
   $result->{returnValue}    = $retval;
+  $result->{stdout}         = "";
+  $result->{stderr}         = "";
 
   if ($retval < 0) {
     $result->{errno} = $ERRNO;
