@@ -1,7 +1,7 @@
 %define         base_name Permabit-checkServer
 Name:           perl-%{base_name}
 Version:        1.0
-Release:        31%{?dist}
+Release:        32%{?dist}
 Summary:        Permabit checkServer utility
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -98,6 +98,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} -c %{buildroot}
 
 %changelog
+* Tue Oct 29 2024 Chung Chung <cchung@redhat.com> - 1.0-32
+- Check if dm_vdo module is installed 
+
 * Wed Jul 31 2024 Chung Chung <cchung@redhat.com> - 1.0-30
 - Add support for FEDORANEXT OS class
 

@@ -201,6 +201,7 @@ our @BAD_PROCESSES = qw(
 
 our %testModules = (
                     "albireo"         => [],
+                    "dm_vdo"          => ["dedupe"],
                     "kvdo"            => ["dedupe"],
                     "pbitcorruptor"   => ["corruptor"],
                     "pbitdory"        => ["dory"],
