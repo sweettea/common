@@ -156,6 +156,7 @@ my $fix = 0;
 my $reboot = 0;
 my $softupdate = 0;
 my @disks;
+my $upStreamModule = "dm_vdo";
 # used by _getRSVPClasses to cache answer
 my @rsvpClasses      = ();
 
@@ -2184,6 +2185,9 @@ sub checkLVMConf {
 ##
 sub checkDKMS {
   foreach my $moduleName (keys(%testModules)) {
+    if ($moduleName =~ $upStreamModule) {
+      next;
+    }
     open(my $fh, "dkms status -m $moduleName 2>&1 |")
       || _die("couldn't run dkms; OS_ERROR = \"$OS_ERROR\"");
     foreach my $line (<$fh>) {
