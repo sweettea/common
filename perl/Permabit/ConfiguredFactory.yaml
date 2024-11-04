@@ -133,6 +133,7 @@ Permabit::RSVP:
         - FEDORA38
         - FEDORA39
         - FEDORA40
+        - FEDORA41
         - FEDORANEXT
         - RAWHIDE
         - RHEL6

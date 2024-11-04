@@ -113,6 +113,7 @@ use Permabit::PlatformUtils qw(
   isThirtyEight
   isThirtyNine
   isForty
+  isFortyOne
   isRawhide
 );
 
@@ -254,6 +255,8 @@ if (isAlbireo()) {
     $CURRENT_KERNELS = '6.*.fc39.x86_64';
   } elsif (isForty()) {
     $CURRENT_KERNELS = '6.*.fc40.x86_64';
+  } elsif (isFortyOne()) {
+    $CURRENT_KERNELS = '6.*.fc41.x86_64';
   } elsif (isRawhide()) {
     # Since Fedora Rawhide's kernel changes so frequently
     # we can only check basic formatting.
@@ -1080,7 +1083,7 @@ sub checkDaemons {
     if ((isCentOS8() || isOotpa() || isPlow() || isFedoraNext()
 	 || isThirtyTwo() || isThirtyThree() || isThirtyFour()
 	 || isThirtyFive() || isThirtySix() || isThirtySeven()
-	 || isThirtyEight() || isThirtyNine() || isForty())
+	 || isThirtyEight() || isThirtyNine() || isForty() || isFortyOne())
         && $daemon eq "ntpd") {
       next;
     }
@@ -1309,6 +1312,7 @@ sub _getOsClass {
     fedora38  => \&isThirtyEight,
     fedora39  => \&isThirtyNine,
     fedora40  => \&isForty,
+    fedora41  => \&isFortyOne,
     rawhide   => \&isRawhide,
   );
   # Fedora linux-next kernel can run on any Fedora OS. Check to see if
