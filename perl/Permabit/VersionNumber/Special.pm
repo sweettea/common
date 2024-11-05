@@ -20,6 +20,10 @@ use Permabit::Assertions qw(
   assertNumArgs
 );
 
+use Exporter qw(import);
+
+our @EXPORT = qw(isSpecialVersionNumber);
+
 # Can't 'use base' here because of circular dependencies.
 our @ISA = qw(Permabit::VersionNumber);
 
