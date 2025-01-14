@@ -5,7 +5,7 @@
 
 %define version 1.0.3
 %define unmangled_version 1.0.3
-%define release 1
+%define release 2
 
 Name: python3-%{modname}
 Version: %{version}
@@ -19,13 +19,13 @@ BuildArch: noarch
 
 Group: Development/Libraries
 
-%if 0%{?rhel} && 0%{?rhel} < 9
-BuildRequires: python39
-BuildRequires: python39-devel
-BuildRequires: python39-rpm-macros
-BuildRequires: python39-setuptools
-BuildRequires: python39-six
-Requires: python39
+%if 0%{?rhel}
+BuildRequires: python3
+BuildRequires: python3-devel
+BuildRequires: python3-rpm-macros
+BuildRequires: python3-setuptools
+BuildRequires: python3-six
+Requires: python3
 %else
 BuildRequires: python3
 BuildRequires: python3-devel
@@ -62,6 +62,9 @@ Conflicts: lsb_release
 %{python3_sitelib}/python3_pbit_lsb_release-%{version}*
 
 %changelog
+* Tue Jan 14 2025 Chung Chung <cchung@redhat.com> - 1.0.3-2
+- Replaced outdated RHEL requirements.
+
 * Fri Oct 21 2022 Joe Shimkus <jshimkush@redhat.com> - 1.0.3-1
 - Changed package generation per Red Hat example.
 
