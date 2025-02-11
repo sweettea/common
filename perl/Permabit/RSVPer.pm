@@ -282,12 +282,9 @@ sub releaseHost {
     if (my $releaseEval = $EVAL_ERROR) {
       $log->error("Unable to release $params{host}: $releaseEval");
       if ($self->{moveToMaintenance}) {
-        $log->info("Attempting to move $params{host} into maintenance and"
-                 . " create a jira issue");
+        $log->info("Attempting to move $params{host} into maintenance");
         eval {
-          my $rsvpMsg = getRsvpTestMsg($params{host}, $rsvp);
-          my $issue = getOwnerMoveToMaint($params{host}, $releaseEval, $rsvp);
-          $log->info("Created issue $issue");
+          getOwnerMoveToMaint($params{host}, $releaseEval, $rsvp);
         };
         if (my $maintEval = $EVAL_ERROR) {
           $log->error("Unable to complete move to maintenance task(s):"

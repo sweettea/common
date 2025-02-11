@@ -48,7 +48,6 @@ use Permabit::INETSocket;
 use Permabit::Utils qw(
   attention
   getUserName
-  onSameNetwork
   reallySleep
   sendChat
   sendMail
@@ -62,8 +61,6 @@ use Permabit::SystemUtils qw(
   runSystemCommand
 );
 use Permabit::Triage::Utils qw(
-  createJiraIssue
-  createIssueDirectory
   getTriagePerson
 );
 
@@ -960,40 +957,6 @@ sub checkState {
 }
 
 ######################################################################
-# Create an issue for a machine.
-#
-# @param params        the hash from moveToMaintenance
-# @param host          the host
-# @param subject       the subject of the issue
-# @param message       the message to add to issue
-#
-# @return              the issue number
-##
-sub _createIssue {
-  my ($self, $params, $host, $subject, $message) = assertNumArgs(5, @_);
-  my $requestor = $self->{user};
-  if ($params->{force} && defined($self->{jiraUserWhenForce})) {
-    $requestor = $self->{jiraUserWhenForce};
-  }
-  my $issue = createJiraIssue($params->{project},
-                              $params->{assignee},
-                              $params->{component},
-                              $subject,
-                              $message,
-                              $requestor,
-                              $params->{codename});
-  if ($issue) {
-    eval {
-      createIssueDirectory($issue);
-    };
-    if ($EVAL_ERROR) {
-      $log->warn("Failed to create issue directory");
-    }
-  }
-  return $issue;
-}
-
-######################################################################
 # Write the message about a machine going into maintenance.
 #
 # @param params             the hash used by moveToMaintenance
@@ -1012,9 +975,6 @@ sub _getMaintenanceMessage {
 $host was moved to maintenance by $self->{user}.
 {noformat:title=Message}
 $params->{message}
-{noformat}
-{noformat:title=Description}
-$params->{description}
 {noformat}
 EOM
   if ($owner) {
@@ -1047,34 +1007,15 @@ EOM
 # @param params        the hash used by moveToMaintenance
 # @param host          the hostname being moved
 # @param oldClasses    a listref to the old classes
-#
-# @return the issue number
 ##
 sub _notifyMaintenance {
   my ($self, $params, $host, $oldClasses) = assertNumArgs(4, @_);
 
   my ($owner, undef, $reservationMessage)
     = $self->getOwnerInfo($host, 'MAINTENANCE');
-  my $subject = "$host in maintenance: $params->{message}";
-  my $message = $self->_getMaintenanceMessage($params, $host, $oldClasses,
-                                              $owner, $reservationMessage);
-  my $issue  = $self->_createIssue($params, $host, $subject, $message);
-  my $issueReference = "";
-  if ($issue) {
-    $issueReference = "See Jira Issue: $issue";
-    if (defined($self->{jiraBrowseURL})) {
-      $message .= "<br/>See jira issue: "
-                  . "<a href=\"$self->{jiraBrowseURL}/$issue\">"
-                  . $issue . "</a>";
-    } else {
-      $message .= "<br/>See jira issue: $issue";
-    }
-  } else {
-    $log->error("No ticket created for $host. Params sent: " . Dumper($params));
-  }
   my ($firstLine) = split(/\n/, $params->{message});
   my $hostDistro = getDistroInfo($host);
-  my $rsvpMsg =  "(DISTRO:$hostDistro) " . $issueReference . ", " . $firstLine;
+  my $rsvpMsg = "(DISTRO:$hostDistro) " . $reservationMessage . ", " . $firstLine;
   if ($params->{assignee}) {
     eval {
       $self->addNextUser(host => $host,
@@ -1105,6 +1046,9 @@ sub _notifyMaintenance {
     }
   }
 
+  my $subject = "$host in maintenance: $params->{message}";
+  my $message = $self->_getMaintenanceMessage($params, $host, $oldClasses,
+                                              $owner, $reservationMessage);
   if ($owner && $owner ne 'DEATH' && !$params->{force}) {
     if (defined($self->{emailDomain})) {
       my $destination = ["${owner}\@$self->{emailDomain}"];
@@ -1115,7 +1059,6 @@ sub _notifyMaintenance {
       sendChat(undef, $owner, "Maintenance Notification", $message);
     };
   }
-  return $issue;
 }
 
 ######################################################################
@@ -1126,13 +1069,10 @@ sub _notifyMaintenance {
 # @oparam params{force}         Force a message if needed, do not send mail
 # @oparam params{assignee}      Owner of issue
 #
-# @return the issue number
-#
 # @croaks If the move fails
 ##
 sub moveToMaintenance {
   my ($self, %params) = assertMinArgs(3, @_);
-  my $issue;
 
   if (!$params{message}) {
     if ($params{force}) {
@@ -1142,12 +1082,7 @@ sub moveToMaintenance {
     }
   }
 
-  $params{project}   = 'OPS';
-  $params{component} = 'Maintenance';
-
-  $params{codename}    ||= 'current';
-  $params{description} ||= '';
-  $params{assignee}    ||= getTriagePerson($params{project});
+  $params{assignee} ||= getTriagePerson($params{project});
 
   foreach my $host (@{$params{hosts}}) {
     if ($self->isInMaintenance($host)) {
@@ -1159,9 +1094,8 @@ sub moveToMaintenance {
                       addClasses      => ['MAINTENANCE'],
                       delClasses      => \@oldClasses,
                      );
-    $issue = $self->_notifyMaintenance(\%params, $host, \@oldClasses);
+    $self->_notifyMaintenance(\%params, $host, \@oldClasses);
   }
-  return $issue;
 }
 
 ######################################################################

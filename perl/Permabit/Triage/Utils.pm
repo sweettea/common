@@ -273,8 +273,6 @@ sub createJiraIssue {
 # @param host     The host to move to maintenance
 # @param error    The release error
 # @param rsvp     An rsvp object
-#
-# @return the new Jira issue Number
 ##
 sub getOwnerMoveToMaint {
   my ($host, $error, $rsvp) = assertNumArgs(3, @_);
@@ -282,10 +280,9 @@ sub getOwnerMoveToMaint {
   $log->info("Test owner = " . ($assignee // "(undef)")
              . ", Maintenance message = $error");
   $log->info("Moving $host into maintenance");
-  my $issue = $rsvp->moveToMaintenance(hosts    => [$host],
-                                       message  => $error,
-                                       assignee => $assignee);
-  return $issue;
+  $rsvp->moveToMaintenance(hosts    => [$host],
+                           message  => $error,
+                           assignee => $assignee->{'Generic'});
 }
 
 ######################################################################
