@@ -321,12 +321,10 @@
 #
 # @item move_to_maintenance
 #
-# Move a single machine to maintenance automatically creating an jira
-# issue with the reason specified with --msg.  If the machine was
-# reserved, then the owner will be sent an email and chat message.  If the
-# --force option is used, then a --msg is not required, the email and
-# chat message will not be sent, and the ticket will not be connected to the
-# mover.
+# Move a single machine to maintenance with the reason specified with
+# --msg.  If the machine was reserved, then the owner will be sent an
+# email and chat message.  If the --force option is used, then a --msg
+# is not required, the email and chat message will not be sent.
 #
 # @level{-}
 #
@@ -768,7 +766,7 @@ sub verifyReservation {
 }
 
 ######################################################################
-# Move a host or hosts into maintenance and create a Jira issue.
+# Move a host or hosts into maintenance.
 ##
 sub moveToMaintenance {
   my (@hosts) = assertNumArgs(1, @_);

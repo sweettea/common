@@ -36,7 +36,6 @@ sub initialize {
 
   # Defaults
   $self->{graphing} //= {};
-  $self->{jira} //= {};
 }
 
 1;

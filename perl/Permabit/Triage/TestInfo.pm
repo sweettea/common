@@ -1,11 +1,10 @@
 ##
 # Constants defined for triage and leaked machine assignments.
+# These are mostly obsolete.
 #
 # @synopsis
 #
 #     use Permabit::Triage::TestInfo;
-#
-#     my $jiraComponent = $TEST_INFO{$suiteName}{component};
 #
 # $Id$
 ##
@@ -20,8 +19,6 @@ use base qw(Exporter);
 
 our @EXPORT_OK = qw(
   %CODENAME_LOOKUP
-  %TEST_INFO
-  %TRIAGE_INFO
   albireoPerfHosts
   vdoPerfHosts
 );
@@ -33,29 +30,8 @@ our %EXPORT_TAGS = (
                 )],
 );
 
-# default Jira project key
-our $JIRAPROJ = 'OPS';
-
 # cruisecontrol test suites
 our @CRUISECONTROL_SUITES = qw(client mirror server);
-
-# A map from component names (some legacy) to the JIRA project key
-# of the project responsible for triage of the component.
-our %TRIAGE_INFO = (
-  'Platform'             => 'OPS',
-  'QA'                   => 'OPS',
-  'DevOps'               => 'OPS',
-  'Test'                 => 'ALB',
-  'Documentation'        => 'ALB',
-  'Utils'                => 'ALB',
-  'Data Set'             => 'ALB',
-  'SDK (Software)'       => 'ALB',
-  'Software'             => 'VDO',
-  'Albireo'              => 'ALB',
-  'FAI'                  => 'OPS',
-  'Perl'                 => 'VDO',
-  'Grapher'              => 'OPS',
-);
 
 # Jira project to codename string hash
 our %CODENAME_LOOKUP = (
@@ -63,50 +39,6 @@ our %CODENAME_LOOKUP = (
   IMF     => "IMF_PROJECT_CODENAME",
   VDO     => "VDO_PROJECT_CODENAME",
   ALBSCAN => "ALBSCANLINUX_PROJECT_CODENAME",
-);
-
-# Test info
-our %TEST_INFO = (
-  AlbireoTest =>
-  {
-    component           => 'SDK (Software)',
-    project             => 'ALB',
-    namePattern         => 'AlbireoTest::(.*).log',
-    prefix              => 'AlbireoTest::',
-    runLogDirs          => [qr/Albireo\w*_Tests/],
-  },
-  Cunit =>
-  {
-    component           => 'SDK (Software)',
-    project             => 'ALB',
-    prefix              => '',
-    namePattern         => 'AlbireoTest::([^:]+::[^:]+)',
-    runLogDirs          => ['Albireo_Cunit_Tests'],
-  },
-  Cunit_lcov =>
-  {
-    component           => 'SDK (Software)',
-    project             => 'ALB',
-    prefix              => '',
-    namePattern         => '[run|capture|html]_(.*).log',
-    runLogDirs          => ['Albireo_Cunit_Lcov_Tests'],
-  },
-  PerlTest =>
-  {
-    component           => 'Perl',
-    project             => 'IMF',
-    namePattern         => 'testcases::(.*).log',
-    prefix              => 'testcases::',
-    runLogDirs          => ['Perl_Tests'],
-  },
-  VDOTest =>
-  {
-    component           => 'Software',
-    project             => 'VDO',
-    namePattern         => 'VDOTest::(.*).log',
-    prefix              => 'VDOTest::',
-    runLogDirs          => [qr/VDO\w*_Tests/],
-  },
 );
 
 # Environment-specific implementation.

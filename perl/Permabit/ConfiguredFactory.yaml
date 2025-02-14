@@ -69,10 +69,6 @@ Permabit::CheckServer::Utils::Implementation:
       # An undefined value says any machine name is acceptable.
       fqdnSuffix:
 
-Permabit::Jira: ~
-# config properties: username, password, server (URL, no trailing
-#                    slash), restVersion (default "latest")
-
 Permabit::LabUtils::Implementation:
   status: enabled
   config:
@@ -206,13 +202,6 @@ Permabit::RSVP:
     #emailDomain: ~
     # Port of the RSVP Daemon
     #dport: 1752
-    # The URL prefix for examining Jira issues; null (default) means
-    # not to include an HTML link in the email message text.
-    #jiraBrowseURL: ~
-    # A special account to use in Jira when forcing a move to
-    # maintenance. Null (the default) means to use the current user’s
-    # id as we normally would.
-    #jiraUserWhenForce: ~
     # How many times to attempt to release a host
     #releaseRetryCount: 4
     # How many seconds to wait in between attempts to release a host
@@ -248,8 +237,6 @@ Permabit::Triage::Utils::Implementation:
     graphing:
       remoteLogs:
       gnuplotOutputDir:
-    jira:
-      user:
 
 Permabit::Utils::Implementation:
   status: enabled

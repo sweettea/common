@@ -6,13 +6,6 @@
 # Tests that aren't expected to pass (but should run) are here
 ##
 @deferred = (
-             # XXX These tests were disabled because at some point they used
-             #     to pass but are now failing after spinning up a continuous
-             #     integration machine for them. With so much of our perl code
-             #     duplicated on //eng/albireo and with some of this code
-             #     being E.A. specific, it's not clear which tests we should
-             #     fix and which we should just get rid of.
-             "TriageUtils_t1",  # testGetTriagePerson() is broken
             );
 
 ###########################################################################

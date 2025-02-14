@@ -34,7 +34,6 @@ use Permabit::Constants;
 use Permabit::RSVP;
 use Permabit::Triage::Utils qw(
   getOwnerMoveToMaint
-  getRsvpTestMsg
 );
 use Permabit::Utils qw(
   canonicalizeHostname

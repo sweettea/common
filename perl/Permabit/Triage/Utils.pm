@@ -10,8 +10,7 @@
 # @description
 #
 # "Permabit::Triage::Utils" provides utility methods for triage tasks like
-# opening Jira issues, and moving machines that nightly couldn't clean up
-# into maintenance.
+# moving machines that nightly couldn't clean up into maintenance.
 #
 # $Id$
 ##
@@ -32,7 +31,6 @@ use Permabit::Assertions qw(
   assertRegexpMatches
 );
 use Permabit::Constants qw($CURRENT_VERSION_FILE);
-use Permabit::Jira;
 use Permabit::SystemUtils qw(
   assertScp
   assertSystem
@@ -41,7 +39,6 @@ use Permabit::SystemUtils qw(
 );
 use Permabit::Triage::TestInfo qw(
   %CODENAME_LOOKUP
-  %TRIAGE_INFO
 );
 use Permabit::Triage::Utils::Implementation;
 
@@ -49,11 +46,9 @@ use base qw(Exporter);
 
 our @EXPORT_OK = qw(
   createIssueDirectory
-  createJiraIssue
   getCodename
   getHostAvailGraph
   getOwnerMoveToMaint
-  getRsvpTestMsg
   getTriagePerson
 );
 
@@ -223,50 +218,6 @@ sub _getMigratorLogInfo {
 }
 
 ######################################################################
-# Create a Jira issue for this failure
-#
-# @param project     The project to use (Dev, Escalation, DevOps)
-# @param assignee    The person who will get the ticket
-# @param component   The component (if there is one in the project)
-# @param summary     The summary text
-# @param description The description
-# @param reporter    The user creating the issue
-# @param version     The version of the code running (or "current")
-#                          (will change based on project)
-#
-# @return The pkey (e.g., PERMA-1234) of the newly created issue
-##
-sub createJiraIssue {
-  my ($project, $assignee, $component, $summary,
-      $description, $reporter, $version) = assertNumArgs(7, @_);
-  my $jira = new Permabit::Jira();
-  if ($version eq "current") {
-    if (exists $CODENAME_LOOKUP{$project}) {
-      $version = getCodename($project);
-    } else {
-      $version = undef;
-    }
-  }
-
-  $reporter = _getImplementation()->{jira}->{user};
-  if (!defined($reporter)) {
-    confess("jira user not defined");
-  }
-  # Jira limits summaries to 255 characters, and objects to newlines.
-  $summary = substr($summary, 0, 254);
-  $summary =~ s/\s/ /g;
-  my $jiraIssue = $jira->createIssue(project           => $project,
-                                     assignee          => $assignee,
-                                     component         => $component,
-                                     summary           => $summary,
-                                     description       => $description,
-                                     reporter          => $reporter,
-                                     version           => $version);
-  $log->info("Created Jira issue $jiraIssue");
-  return $jiraIssue;
-}
-
-######################################################################
 # Notice the test owner for a machine from the rsvp msg, and move that
 # machine to maintenance
 #
@@ -276,7 +227,7 @@ sub createJiraIssue {
 ##
 sub getOwnerMoveToMaint {
   my ($host, $error, $rsvp) = assertNumArgs(3, @_);
-  my $assignee = _getTestOwnerFromRsvpMsg($host, $rsvp);
+  my $assignee = getTriagePerson('Software');
   $log->info("Test owner = " . ($assignee // "(undef)")
              . ", Maintenance message = $error");
   $log->info("Moving $host into maintenance");
@@ -288,20 +239,15 @@ sub getOwnerMoveToMaint {
 ######################################################################
 # Get the triage person responsible for a particular test suite.
 #
-# @param component   The JIRA component
+# @param component  Unused
 #
 # @return triage person
 ##
 sub getTriagePerson {
   my ($component) = assertNumArgs(1, @_);
 
-  # Map the component name to a JIRA project key, defaulting to OPS.
-  my $project = $TRIAGE_INFO{$component // ""} // "OPS";
-
-  # Query JIRA for the current project lead of the test's project,
-  # who is also (by convention) the triage person for that project.
-  my $jira = new Permabit::Jira();
-  return $jira->getProjectLeadName($project);
+  # There is no useful value in this context.
+  return undef;
 }
 
 ######################################################################
@@ -333,57 +279,6 @@ sub getCodename {
     }
   }
   return $codename;
-}
-
-######################################################################
-# Read the RSVP test message and try to determine the appropriate
-# triage person to get the ticket.
-#
-# @param host  The host to read the RSVP message from
-# @param rsvp  An RSVP object
-#
-# @return the triage person responsible for the suite in the RSVP
-# message. If no suite is found, return the OPS triage person.
-##
-sub _getTestOwnerFromRsvpMsg {
-  my ($host, $rsvp) = assertNumArgs(2, @_);
-  my $testMsg = getRsvpTestMsg($host, $rsvp);
-  my ($suite) = $testMsg =~ /^([^:]+)::/;
-
-  my $testComponent;
-  if ($testMsg =~ /(Albireo|UDS|albireoUnit.pl)/) {
-    $testComponent = 'SDK (Software)';
-  } elsif ($testMsg =~ /VDO/) {
-    $testComponent = 'Software';
-  } elsif ($testMsg =~ /testcases/) {
-    $testComponent = 'Perl';
-  }
-
-  return getTriagePerson($testComponent);
-}
-
-######################################################################
-# Get the test portion of an RSVP message for a given host
-#
-# @param host   The host
-# @param rsvp   An rsvp object
-#
-# @return the test found in an RSVP message or 0
-##
-sub getRsvpTestMsg {
-  my ($host, $rsvp) = assertNumArgs(2, @_);
-  my (undef, undef, $curMsg) = $rsvp->getOwnerInfo($host);
-  if ($curMsg) {
-    if ($curMsg =~ /: (\S+): / || $curMsg =~ /(perfTest PMI[\S]+)/) {
-      my $test = $1;
-      return $test;
-    } else {
-      $log->warn("Could not parse RSVP message: $curMsg");
-    }
-  } else {
-    $log->warn("RSVP \$curMsg is empty, cannot parse");
-  }
-  return 0;
 }
 
 1;
