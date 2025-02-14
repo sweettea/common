@@ -1013,6 +1013,7 @@ sub _notifyMaintenance {
 
   my ($owner, undef, $reservationMessage)
     = $self->getOwnerInfo($host, 'MAINTENANCE');
+  $reservationMessage ||= "";
   my ($firstLine) = split(/\n/, $params->{message});
   my $hostDistro = getDistroInfo($host);
   my $rsvpMsg = "(DISTRO:$hostDistro) " . $reservationMessage . ", " . $firstLine;

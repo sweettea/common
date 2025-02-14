@@ -659,27 +659,7 @@ EOF
 
 my $calls = {
              mail => [],
-             jira => [],
             };
-
-######################################################################
-##
-sub _fakeCreateJiraIssue {
-  my ($project, $assignee, $component, $summary,
-      $description, $reporter, $version) = assertNumArgs(7, @_);
-  $log->debug("called _fakeCreateJiraIssue");
-  my $jiraInfo = {
-                  project     => $project,
-                  assignee    => $assignee,
-                  component   => $component,
-                  summary     => $summary,
-                  description => $description,
-                  reporter    => $reporter,
-                  version     => $version,
-                 };
-  push(@{$calls->{jira}}, $jiraInfo);
-  return "JIRA-123";
-}
 
 ######################################################################
 ##
@@ -737,24 +717,21 @@ sub _asyncCallNotify {
   # Only override these in the subprocess.
   {
     no warnings;
-    *Permabit::RSVP::createJiraIssue = \&_fakeCreateJiraIssue;
     *Permabit::RSVP::createIssueDirectory
       = \&_fakeCreateIssueDirectory;
     *Permabit::RSVP::getDistroInfo = \&_fakeGetDistroInfo;
     *Permabit::RSVP::sendMail = \&_fakeSendMail;
     *Permabit::RSVP::sendChat = \&_fakeSendChat;
   }
-  my $issue = $rsvp->_notifyMaintenance($testParams, "test-host",
-                                        \@oldClasses);
-  assertEq("JIRA-123", $issue);
-  assertEqualNumeric(1, scalar(@{$calls->{jira}}));
+  $rsvp->_notifyMaintenance($testParams, "test-host",
+                            \@oldClasses);
   return $calls;
 }
 
 ######################################################################
 ##
 sub _testNotifyCommon {
-  my ($self, $config, $params, $expectedJiraUser) = assertNumArgs(4, @_);
+  my ($self, $config, $params) = assertNumArgs(3, @_);
   my ($fh, $tempfile) = tempfile();
   $self->{testConfigFile} = $tempfile;
   print $fh $config;
@@ -766,10 +743,6 @@ sub _testNotifyCommon {
   my $result = $task->result();
   unlink($self->{testConfigFile});
   delete $self->{testConfigFile};
-  # There should always be one ticket opened, though the reporter name
-  # can vary. Email will vary, and should be checked per call.
-  assertEqualNumeric(1, scalar(@{$result->{jira}}));
-  assertEq($expectedJiraUser, $result->{jira}->[0]->{reporter});
   return $result;
 }
 
@@ -781,7 +754,7 @@ sub testNotify {
   my $oldConfig = `cat $oldConfigPath`;
   $oldConfig =~ s/^Permabit::RSVP:.*\n(^ .*\n)*//m;
 
-  # Testing: emailDomain, jiraUserWhenForce, force.
+  # Testing: emailDomain, force.
   my $testConfig = <<EOF;
 Permabit::RSVP:
   config:
@@ -800,8 +773,7 @@ EOF
                };
 
   # No owner in RSVP
-  my $result = $self->_testNotifyCommon("$oldConfig\n$testConfig", $params,
-                                        "bob");
+  my $result = $self->_testNotifyCommon("$oldConfig\n$testConfig", $params);
   assertEqualNumeric(0, scalar(@{$result->{mail}}));
 
   # With owner
@@ -810,8 +782,7 @@ EOF
                  message => "party on, dude",
                  data => [['test-host', 'some-owner', 'MAINTENANCE']]
                 });
-  $result = $self->_testNotifyCommon("$oldConfig\n$testConfig", $params,
-                                     "bob");
+  $result = $self->_testNotifyCommon("$oldConfig\n$testConfig", $params);
   assertEqualNumeric(1, scalar(@{$result->{mail}}));
   my $mail = $result->{mail}->[0];
   assertEq("bob\@mail.example.com", $mail->{src});
@@ -824,20 +795,7 @@ EOF
                  message => "party on, dude",
                  data => [['test-host', 'some-owner', 'MAINTENANCE']]
                 });
-  $result = $self->_testNotifyCommon("$oldConfig\n$testConfig", $params,
-                                     "bob");
-  # force suppresses email
-  assertEqualNumeric(0, scalar(@{$result->{mail}}));
-
-  # With owner, force=1, with user override setting
-  $testConfig .= "    jiraUserWhenForce: magicJiraUser\n";
-  @responses = ({
-                 type => "success",
-                 message => "party on, dude",
-                 data => [['test-host', 'some-owner', 'MAINTENANCE']]
-                });
-  $result = $self->_testNotifyCommon("$oldConfig\n$testConfig", $params,
-                                     "magicJiraUser");
+  $result = $self->_testNotifyCommon("$oldConfig\n$testConfig", $params);
   # force suppresses email
   assertEqualNumeric(0, scalar(@{$result->{mail}}));
 }
