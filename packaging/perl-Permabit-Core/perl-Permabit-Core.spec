@@ -1,7 +1,7 @@
 %define         base_name Permabit-Core
 Name:           perl-%{base_name}
 Version:        1.03
-Release:        51%{?dist}
+Release:        52%{?dist}
 Summary:        Permabit Core Perl libs
 License:        GPL2+
 URL:            https://github.com/dm-vdo/common
@@ -189,16 +189,6 @@ This package contains the Permabit Perl INETSocket module.
 %dir %{perl_vendorlib}/Permabit/
 %{perl_vendorlib}/Permabit/INETSocket.pm
 
-%package -n perl-Permabit-Jira
-Summary:        Permabit Jira Perl Module
-
-%description -n perl-Permabit-Jira
-This package contains the Permabit Perl Jira modules.
-
-%files -n perl-Permabit-Jira
-%dir %{perl_vendorlib}/Permabit/
-%{perl_vendorlib}/Permabit/Jira.pm
-
 %package -n perl-Permabit-NotUsed
 Summary:        Permabit Perl Modules that are not expected to be used.
 
@@ -256,7 +246,6 @@ to run anything in the environments required by VDO.
 %{perl_vendorlib}/Permabit/testcases/Tempfile_t1.pm
 %{perl_vendorlib}/Permabit/testcases/TestcaseTest.pm
 %{perl_vendorlib}/Permabit/testcases/TimeoutDummyTest.pm
-%{perl_vendorlib}/Permabit/testcases/TriageUtils_t1.pm
 %{perl_vendorlib}/Permabit/testcases/Utils_t1.pm
 %{perl_vendorlib}/Permabit/testcases/VersionNumber_t1.pm
 %{perl_vendorlib}/Permabit/testcases/log.conf
@@ -443,13 +432,16 @@ find %{buildroot} -type f -name .packlist -delete
 %{__install} -m 644 -D lib/Permabit/ConfiguredFactory.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/permabit/perl.yaml
 
 %changelog
+* Wed Mar 05 2025 Chung Chung <cchung@redhat.com> - 1.03-52
+- Remove unused Jira and TriageUtils_t1 references
+
 * Wed Mar 05 2025 Chung Chung <cchung@redhat.com> - 1.03-51
 - Add support for RHEL10
 
 * Tue Feb 11 2025 Matthew Sakai <msakai@redhat.com> - 1.03-50
 - Remove unused jira interfaces
 
-* Mon Nov 05 2024 Chung Chung <cchung@redhat.com> - 1.03-49
+* Tue Nov 05 2024 Chung Chung <cchung@redhat.com> - 1.03-49
 - Fix isSpecialVersionNumber sub in Special.pm
 
 * Mon Nov 04 2024 Chung Chung <cchung@redhat.com> - 1.03-48

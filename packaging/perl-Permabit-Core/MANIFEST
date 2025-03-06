@@ -24,7 +24,6 @@ lib/Permabit/Future/Makefile
 lib/Permabit/Future/Timer.pm
 lib/Permabit/Grub.pm
 lib/Permabit/INETSocket.pm
-lib/Permabit/Jira.pm
 lib/Permabit/KernelModule.pm
 lib/Permabit/LabUtils.pm
 lib/Permabit/LabUtils/Implementation.pm
