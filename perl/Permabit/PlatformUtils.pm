@@ -53,6 +53,7 @@ our @EXPORT_OK = qw(
   isAlbireo
   isCentOS
   isCentOS8
+  isCoughlan
   isDebian
   isDebianBased
   isFedora
@@ -315,7 +316,8 @@ sub getDistroInfo {
     }
   } elsif (_lsbReleaseMatches($lsb, "RedHatEnterprise.*")) {
     my $major = _getLsbReleaseMajorVersion($lsb);
-    if (($major == 6) || ($major == 7) || ($major == 8) || ($major == 9)) {
+    if (($major == 6) || ($major == 7) || ($major == 8) || ($major == 9)
+	|| ($major == 10)) {
       return "RHEL$major";
     }
   } elsif (_lsbReleaseMatches($lsb, "Fedora")) {
@@ -578,7 +580,7 @@ BEGIN {
   our $KNOWN_RELEASES = {
     ubuntu => [qw(precise raring trusty vivid xenial)],
     debian => [qw(jessie lenny squeeze wheezy)],
-    redHat => [qw(Santiago Maipo Ootpa Plow)],
+    redHat => [qw(Santiago Maipo Ootpa Plow Coughlan)],
     fedora => [qw(TwentySeven TwentyEight TwentyNine Thirty ThirtyOne
 	          ThirtyTwo ThirtyThree ThirtyFour ThirtyFive ThirtySix 
 	          ThirtySeven ThirtyEight ThirtyNine Forty FortyOne Rawhide)],

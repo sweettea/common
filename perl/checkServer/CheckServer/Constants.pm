@@ -71,6 +71,8 @@ our @DIST_CLASSES = qw(CENTOS8
                        RHEL8DEBUG
                        RHEL9
                        RHEL9DEBUG
+                       RHEL10
+                       RHEL10DEBUG
                        WHEEZY39
                        WHEEZY310
                        VIVID

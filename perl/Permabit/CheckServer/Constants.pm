@@ -90,7 +90,9 @@ our @DIST_CLASSES = qw(CENTOS8
                        RHEL8
                        RHEL8DEBUG
                        RHEL9
-                       RHEL9DEBUG);
+                       RHEL9DEBUG
+                       RHEL10
+                       RHEL10DEBUG);
 
 # The following are basic constants used
 our $BIGMEM = 16777216;  # Minimal amount to belong in BIGMEM class

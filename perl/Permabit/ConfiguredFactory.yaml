@@ -138,6 +138,8 @@ Permabit::RSVP:
         - RHEL8DEBUG
         - RHEL9
         - RHEL9DEBUG
+        - RHEL10
+        - RHEL10DEBUG
     processes:
       ok:
         nonUser:

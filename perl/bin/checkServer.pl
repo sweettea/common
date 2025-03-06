@@ -93,6 +93,7 @@ use Permabit::PlatformUtils qw(
   isAlbireo
   isCentOS
   isCentOS8
+  isCoughlan
   isFedora
   isFedoraNext
   isMaipo
@@ -225,6 +226,8 @@ if (isAlbireo()) {
       '4.18.0-.*\.(|1.2.)el8(|_[0-9])(|\.v[0-9]+).x86_64(|\+debug)';
   } elsif (isPlow()) {
     $CURRENT_KERNELS = '5.14.0-.*.el9(|_([0-9])).x86_64(|\+debug)';
+  } elsif (isCoughlan()) {
+    $CURRENT_KERNELS = '6.12.0-.*.el10(|_([0-9])).x86_64(|\+debug)';
   } elsif (isFedoraNext()) {
     $CURRENT_KERNELS = '.*.*next.*fc.*x86_64';
   } elsif (isTwentySeven()) {
@@ -1080,7 +1083,7 @@ sub checkDaemons {
   foreach my $daemon (keys(%DAEMONS)) {
     #XXX: ntpd is not available in RHEL8, FEDORA32 and FEDORA33 anymore,
     #     we need to fix this at some point"
-    if ((isCentOS8() || isOotpa() || isPlow() || isFedoraNext()
+    if ((isCentOS8() || isOotpa() || isPlow() || isCoughlan() || isFedoraNext()
 	 || isThirtyTwo() || isThirtyThree() || isThirtyFour()
 	 || isThirtyFive() || isThirtySix() || isThirtySeven()
 	 || isThirtyEight() || isThirtyNine() || isForty() || isFortyOne())
@@ -1147,7 +1150,7 @@ sub checkRSVPClasses {
     # Since CentOS/RHEL8 (Ootpa) is the target for //eng/linux-uds,
     # //eng/linux-vdo and //eng/vdo usage, add the LINUX-UDS, LINUX-VDO
     # respectively.
-    if (isCentOS8() || isOotpa() || isPlow()) {
+    if (isCentOS8() || isOotpa() || isPlow() || isCoughlan()) {
       push(@goodClasses, 'LINUX-UDS', 'LINUX-VDO');
     }
 
@@ -1203,9 +1206,11 @@ sub checkRSVPClasses {
     FEDORA           => sub { return (isFedora()) },
     JFARM            => \&_isJFarm,
     "LINUX-UDS"      => sub { return (isCentOS8() || isFedora()
-                                      || isOotpa() || isPlow()) },
+                                      || isOotpa() || isPlow()
+				      || isCoughlan()) },
     "LINUX-VDO"      => sub { return (isCentOS8() || isFedora()
-                                      || isOotpa() || isPlow()) },
+                                      || isOotpa() || isPlow()
+				      || isCoughlan()) },
     PFARM            => \&_isPFarm,
     # Everything should currently be able to run VDO.
     #XXX: Of course this begs the question of whether it's actually useful to
@@ -1298,6 +1303,7 @@ sub _getOsClass {
     rhel7     => \&isMaipo,
     rhel8     => \&isOotpa,
     rhel9     => \&isPlow,
+    rhel10    => \&isCoughlan,
     fedora27  => \&isTwentySeven,
     fedora28  => \&isTwentyEight,
     fedora29  => \&isTwentyNine,
