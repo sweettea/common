@@ -356,8 +356,8 @@ sub tear_down {
     if (scalar(@binaries) > 0) {
       my $regexp = join("|", map { "^$_\$" } @binaries);
       foreach my $host ($self->getTestHosts()) {
-        runCommand($host, "pkill -QUIT '$regexp'");
-        runCommand($host, "pkill -KILL '$regexp'");
+        runCommand($host, "pkill -f -QUIT '$regexp'");
+        runCommand($host, "pkill -f -KILL '$regexp'");
       }
     }
   }
