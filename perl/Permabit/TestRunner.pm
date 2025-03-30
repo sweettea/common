@@ -207,9 +207,18 @@ use Log::Log4perl::Level;
 use Log::Log4perl;
 use POSIX qw(strftime :signal_h);
 use Storable qw(dclone);
-use Sys::CpuLoad;
 use Sys::Hostname;
 use Test::Unit::TestRunner;
+
+# Try to load Sys::CpuLoad, but don't fail if it's not available
+my $hasCpuLoad = 0;
+BEGIN {
+  eval {
+    require Sys::CpuLoad;
+    Sys::CpuLoad->import();
+    $hasCpuLoad = 1;
+  };
+}
 
 use Pdoc::Generator qw(pdoc2help pdoc2usage);
 use Permabit::Assertions qw(assertNumArgs);
@@ -785,11 +794,20 @@ sub _startMoreThreads {
   sleep(1);
 
   if ($scale) {
-    my $load = Sys::CpuLoad::load();
-    if ($load > $MAX_LOAD) {
-      $log->info("load $load is higher than $MAX_LOAD: throttling");
-      return 0;
+    if ($hasCpuLoad) {
+      eval {
+        my $load = Sys::CpuLoad::load();
+        if ($load > $MAX_LOAD) {
+          $log->info("load $load is higher than $MAX_LOAD: throttling");
+          return 0;
+        }
+      };
+      # If load check fails, just continue with other checks
+      if ($@) {
+        $log->info("CPU load check failed: $@");
+      }
     }
+    
     if ($currentThreads >= $MAX_THREADS) {
       $log->info("$currentThreads threads reached max ($MAX_THREADS):"
                 . " throttling");
