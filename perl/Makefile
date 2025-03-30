@@ -8,7 +8,7 @@ PWD:= $(shell pwd)
 LIB:= ${PWD}/lib
 DESTDIR:= ${PWD}/build
 
-SUBDIRS:= third
+SUBDIRS:=
 CHECKIN_SUBDIRS := Permabit
 SYMLINKS:= Permabit Pdoc
 DOCTREES:=					\
