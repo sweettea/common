@@ -9,7 +9,6 @@ SUBDIRS:=					\
           IPC-Session-0.05			\
           Log-Dispatch-FileRotate-1.11		\
           Proc-Simple-1.32			\
-          Shuffle-1.4				\
 
 all: ${SUBDIRS}
 
