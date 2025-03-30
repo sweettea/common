@@ -18,6 +18,7 @@ use Permabit::Triage::TestInfo::Implementation;
 use base qw(Exporter);
 
 our @EXPORT_OK = qw(
+  %TEST_INFO
   %CODENAME_LOOKUP
   albireoPerfHosts
   vdoPerfHosts
