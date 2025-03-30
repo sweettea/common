@@ -543,15 +543,13 @@ sub run_bare {
 }
 
 ###############################################################################
-# Put a state marker in the kernel log of each host.  Allow this to fail on
-# hosts that do not have the permatest package installed.
-#
+# Put a state marker in the kernel log of each host. 
 # @param state  The state of the test to log.
 ##
 sub logStateInKernLog {
   my ($self, $state) = assertNumArgs(2, @_);
   my $mark = join(" ", "echo", $state, $self->fullName());
-  my $printk = "sudo tee /sys/permatest/printk";
+  my $printk = "sudo tee /dev/kmsg";
   map { runCommand($_, "$mark | $printk"); } ($self->getTestHosts());
 }
 

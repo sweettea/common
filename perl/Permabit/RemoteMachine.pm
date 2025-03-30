@@ -1151,7 +1151,7 @@ sub _searchJournalNosync {
 sub syncJournal {
   my ($self) = assertNumArgs(1, @_);
   my $marker = "Sync Marker " . makeRandomToken(10);
-  $self->setProcFile($marker, "/sys/permatest/printk");
+  $self->runSystemCmd("echo $marker | sudo tee /dev/kmsg");
   $self->checkedSendCommand("sudo journalctl --sync");
   my $findMarker = sub {
     $self->_searchJournalNosync(undef, $marker, 1);
@@ -1388,7 +1388,7 @@ sub syncLog {
   my $position = $self->getLogSize($file) + 1;
   my $marker = "Sync Marker " . makeRandomToken(10);
   if ($file eq $KERN_LOG) {
-    $self->setProcFile($marker, "/sys/permatest/printk");
+    $self->runSystemCmd("echo $marker | sudo tee /dev/kmsg");
   } elsif ($file eq $DAEMON_LOG) {
     $self->runSystemCmd("logger -p daemon.error $marker");
   } elsif ($file eq $SYS_LOG) {
