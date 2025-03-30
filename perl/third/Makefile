@@ -5,8 +5,7 @@
 PWD:= $(shell pwd)
 LIB:= ${PWD}/../lib
 
-SUBDIRS:=					\
-          Proc-Simple-1.32			\
+SUBDIRS:=
 
 all: ${SUBDIRS}
 
