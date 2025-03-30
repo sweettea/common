@@ -25,12 +25,7 @@ EXPORTER_COPY:= ${ROOT}/Exporter.pm
 HTMLROOT:= http://127.0.0.1/~${USER}/perldoc
 PODPATH:= .:Permabit:${USER}
 
-OS_VER := $(shell lsb_release -s -c)
-ifeq (${OS_VER},lenny)
-  CRITIC_PROFILE := ${ROOT}/.perlcritic.deprecated
-  else
-  CRITIC_PROFILE := ${ROOT}/.perlcritic
-endif
+CRITIC_PROFILE := ${ROOT}/.perlcritic
 
 DESTDIR:= .
 
