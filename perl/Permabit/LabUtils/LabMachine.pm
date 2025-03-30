@@ -220,6 +220,12 @@ sub bootId {
 ##
 sub uptime {
   my ($self) = assertNumArgs(1, @_);
+  if ($self->{hostname} eq "localhost") {
+    # For localhost, read it from /proc/uptime directly
+    my $result = runCommand("localhost", "cat /proc/uptime | cut -d' ' -f 1");
+    return $result->{stdout} if $result->{status} == 0;
+    return "";
+  }
   return athinfo($self->{hostname}, "uptimesec");
 }
 
