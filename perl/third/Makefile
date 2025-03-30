@@ -6,7 +6,6 @@ PWD:= $(shell pwd)
 LIB:= ${PWD}/../lib
 
 SUBDIRS:=					\
-          IPC-Session-0.05			\
           Proc-Simple-1.32			\
 
 all: ${SUBDIRS}
