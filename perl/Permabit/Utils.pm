@@ -1087,6 +1087,7 @@ sub sendChat {
 ######################################################################
 # Wait until a given condition is true, retrying at specified intervals.
 # This will croak on timeout, unless the timeoutFuncRef is specified.
+# Will immediately die if Ctrl+C (SIGINT) is pressed.
 #
 # @param condition       A code ref which should return true or false and will
 #                        be repeatedly evaluated until it returns true
@@ -1106,6 +1107,11 @@ sub sendChat {
 sub retryUntilTimeout {
   my ($condition, $errorMsg, $timeout, $retryInterval, $timeoutFuncRef)
     = assertMinMaxArgs([$FOREVER, 1, \&confess], 2, 5, @_);
+
+  # Set up signal handler for Ctrl+C
+  local $SIG{INT} = sub {
+    die("Interrupted by Ctrl+C\n");
+  };
 
   my $ret;
   my $start = time();
