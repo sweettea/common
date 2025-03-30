@@ -18,9 +18,10 @@ package Permabit::Triage::Utils;
 
 use strict;
 use warnings FATAL => qw(all);
+use autodie qw(open close);
+
 use Carp qw(confess);
 use English qw(-no_match_vars);
-use Fatal qw(open close);
 use File::Temp qw(tempdir);
 use FindBin;
 use Log::Log4perl;

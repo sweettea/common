@@ -24,9 +24,10 @@ package Permabit::PlatformUtils;
 
 use strict;
 use warnings FATAL => qw(all);
+use autodie qw(open close);
+
 use Carp qw(croak);
 use English qw(-no_match_vars);
-use Fatal qw(open :void close);
 use Log::Log4perl;
 use Permabit::Assertions qw(
   assertMinMaxArgs

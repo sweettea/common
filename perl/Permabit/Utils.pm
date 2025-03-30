@@ -26,11 +26,11 @@ package Permabit::Utils;
 
 use strict;
 use warnings FATAL => qw(all);
+use autodie qw(open close opendir);
 
 use Carp qw(carp cluck confess croak);
 use Config;
 use English qw(-no_match_vars);
-use Fatal qw(:void open close opendir);
 use File::Basename;
 use File::Spec;
 use Mail::Mailer;

@@ -7,9 +7,10 @@ package testcases::SystemUtils_t1;
 
 use strict;
 use warnings FATAL => qw(all);
+use autodie qw(mkdir);
+
 use Carp qw(croak);
 use English qw(-no_match_vars);
-use Fatal qw(mkdir);
 use IO::File;
 use Permabit::Assertions qw(
   assertEq
