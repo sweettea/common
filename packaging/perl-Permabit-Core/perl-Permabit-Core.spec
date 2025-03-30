@@ -240,7 +240,6 @@ to run anything in the environments required by VDO.
 %{perl_vendorlib}/Permabit/testcases/ReserveHostGroup.pm
 %{perl_vendorlib}/Permabit/testcases/SSHMuxIPCSession_t1.pm
 %{perl_vendorlib}/Permabit/testcases/Sort_t1.pm
-%{perl_vendorlib}/Permabit/testcases/SupportUtils_t1.pm
 %{perl_vendorlib}/Permabit/testcases/SystemUtils_t1.pm
 %{perl_vendorlib}/Permabit/testcases/SystemUtils_t1.yaml
 %{perl_vendorlib}/Permabit/testcases/Tempfile_t1.pm
@@ -389,7 +388,6 @@ This package contains the Permabit Perl Utils module.
 %{perl_vendorlib}/Permabit/LabUtils/Makefile
 %{perl_vendorlib}/Permabit/PlatformUtils.pm
 %{perl_vendorlib}/Permabit/ProcessUtils.pm
-%{perl_vendorlib}/Permabit/SupportUtils.pm
 %{perl_vendorlib}/Permabit/SystemUtils.pm
 %{perl_vendorlib}/Permabit/SystemUtils/Implementation.pm
 %{perl_vendorlib}/Permabit/Utils.pm

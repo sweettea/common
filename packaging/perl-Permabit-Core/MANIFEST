@@ -41,8 +41,6 @@ lib/Permabit/RSVPer.pm
 lib/Permabit/RemoteMachine.pm
 lib/Permabit/SSHMuxIPCSession.pm
 lib/Permabit/Statistic.pm
-lib/Permabit/SupportUtils.pm
-lib/Permabit/SupportUtils/Implementation.pm
 lib/Permabit/SystemUtils.pm
 lib/Permabit/Tempfile.pm
 lib/Permabit/TestRunner.pm
